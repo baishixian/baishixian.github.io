@@ -1,0 +1,768 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Android线上bug热修复分析 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Android线上bug热修复分析"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Android/">Android</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Android线上bug热修复分析</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2016-04-20T17:15:55.000Z"><a href="/2016/04/21/Android线上bug热修复分析/">2016-04-21</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android/" class="chip light-green">Android</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#关于Hot-Fix技术"><span class="section table-of-contents-text">关于Hot Fix技术</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#热修复技术能带来什么"><span class="section table-of-contents-text">热修复技术能带来什么</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#现有的技术方案"><span class="section table-of-contents-text">现有的技术方案</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#技术预研"><span class="section table-of-contents-text">技术预研</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#热修复-动态替换-动态加载"><span class="section table-of-contents-text">热修复 == 动态替换 == 动态加载</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#Java中ClassLoader的基本概念："><span class="section table-of-contents-text">Java中ClassLoader的基本概念：</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#Android的classLoader机制"><span class="section table-of-contents-text">Android的classLoader机制</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-5"><a class="section table-of-contents-link" href="#Android经常使用的是PathClassLoader和DexClassLoader"><span class="section table-of-contents-text">Android经常使用的是PathClassLoader和DexClassLoader</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#ClassLoader特性"><span class="section table-of-contents-text">ClassLoader特性</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#希望最终的效果"><span class="section table-of-contents-text">希望最终的效果</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#技术选型"><span class="section table-of-contents-text">技术选型</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#插件化和热修复"><span class="section table-of-contents-text">插件化和热修复</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#热修复具体实施"><span class="section table-of-contents-text">热修复具体实施</span></a></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>针对app线上修复技术，目前有好几种解决方案，开源界往往一个方案会有好几种实现。重复的实现会有造轮子之嫌，但分析解决方案在技术上的探索和衍变，这轮子还是值得去推动的</p>
+</blockquote>
+<h3 id="关于Hot-Fix技术"><a href="#关于Hot-Fix技术" class="headerlink" title="关于Hot Fix技术"></a>关于Hot Fix技术</h3><p>Hot Fix技术，简单来说就是针对线上已发布app出现了bug，在不推送新版本的情况下通过发布修复补丁进行修复。通常是刚上线的app，需要快速线上修复bug，类似的技术就叫做热修复或热补丁。</p>
+<p><img src="http://7xt7m8.com2.z0.glb.clouddn.com/fix1.png" alt="fix it"></p>
+<h3 id="热修复技术能带来什么"><a href="#热修复技术能带来什么" class="headerlink" title="热修复技术能带来什么"></a>热修复技术能带来什么</h3><ul>
+<li>让app具有了上线后被修复的可能性，增加事故风险可控性；</li>
+<li>避免为修复bug而快速增发新版本，让用户“无感”，提升体验；</li>
+<li>推送新版本app修复时，用户升级覆盖面无法保证；</li>
+<li>避免增发修复版本的复杂流程，减少发布新版本app成本；</li>
+</ul>
+<h3 id="现有的技术方案"><a href="#现有的技术方案" class="headerlink" title="现有的技术方案"></a>现有的技术方案</h3><p>目前，从技术解决方案上来说，有以下几种思路：</p>
+<ul>
+<li><a href="https://github.com/alibaba/dexposed" target="_blank" rel="external">Dexposed</a><blockquote>
+<p>来自阿里手淘团队，白衣（花名）基于Xposed实现了Dexposed，在此基础上手淘团队推出了<a href="http://www.infoq.com/cn/presentations/mobilephone-taobao-hotpatch-technology-introduction" target="_blank" rel="external">HotPatch</a>二方库。</p>
+</blockquote>
+</li>
+<li><a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a><blockquote>
+<p>出自阿里支付宝技术团队，同样是对方法的hook，但未基于Dexposed去实现，避免了在art上运行时存在兼容性问题。</p>
+</blockquote>
+</li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=400118620&amp;idx=1&amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;scene=1&amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect" target="_blank" rel="external">基于ClassLoader</a><blockquote>
+<p>QQ空间终端开发团队提供了技术思路，目前基于此实现的热门的开源项目有<a href="https://github.com/jasonross/Nuwa" target="_blank" rel="external">Nuwa</a>,<a href="https://github.com/dodola/HotFix" target="_blank" rel="external">HotFix</a>,<a href="https://github.com/bunnyblue/DroidFix" target="_blank" rel="external">DroidFix</a>，这三种方案的原理却徊然不同，各有优缺点。</p>
+</blockquote>
+</li>
+</ul>
+<p>关于三者技术的介绍，这里推荐一篇文章：<a href="http://blog.zhaiyifan.cn/2015/11/20/HotPatchCompare/" target="_blank" rel="external">各大热补丁方案分析和比较</a>，这里不做细说。</p>
+<h3 id="技术预研"><a href="#技术预研" class="headerlink" title="技术预研"></a>技术预研</h3><h4 id="热修复-动态替换-动态加载"><a href="#热修复-动态替换-动态加载" class="headerlink" title="热修复 == 动态替换 == 动态加载"></a>热修复 == 动态替换 == 动态加载</h4><p>得出上面的等式，是因为热修复一般来说就是增发patch文件，避免用户调用错误代码，并不是直接修改了原来的代码。这相当于是对问题文件做了动态替换，而要实现动态替换就是避免默认的加载，改变成动态地加载替换文件。<br><strong>动态加载的基础是ClassLoader</strong>，Java程序在运行时加载对应的类是通过ClassLoader来实现的， Java 类可以被动态加载到 Java 虚拟机中并执行。所以ClassLoader所做的工作实质就是把类文件从硬盘读取到内存中。<br><img src="http://7xt7m8.com2.z0.glb.clouddn.com/fix2.png" alt="AndFix示例图"></p>
+<h4 id="Java中ClassLoader的基本概念："><a href="#Java中ClassLoader的基本概念：" class="headerlink" title="Java中ClassLoader的基本概念："></a>Java中ClassLoader的基本概念：</h4><p><img src="http://7xt7m8.com2.z0.glb.clouddn.com/fix3.png" alt="ClassLoader.png"></p>
+<ul>
+<li><strong>类加载器的树状结构：</strong>在JVM中，所有类加载器实例按树状结构组织，根结点为引导类加载器。除根结点外的所有类加载器都有一个非空的父类加载器，从而构成树状结构；</li>
+<li><p><strong>双亲委托（代理）模型：</strong>当类加载器收到加载类或资源的请求时，通常都是先委托给父类加载器加载，也就是说只有当父类加载器找不到指定类或资源时，自身才会执行实际的类加载过程；</p>
+<blockquote>
+<p>代理模式是为了保证 Java 核心库的类型安全。通过代理模式，对于 Java 核心库的类的加载工作由bootClassLoader来统一完成，保证了 Java 应用所使用的都是同一个版本的 Java 核心库的类，是互相兼容的。</p>
+</blockquote>
+</li>
+<li><p><strong>类的判等：</strong>即使类完全相同（名称相同、字节码相同），不同类加载器实例加载的类对象也是不相等的；</p>
+<blockquote>
+<p>这条规则是Java类加载机制中非常核心的规则，它保证了类加载机制实现“类隔离”、“保护JDK中的基础类”等目标。</p>
+</blockquote>
+</li>
+<li><p><strong>类的垃圾回收：</strong>只有当类加载器可被作为垃圾回收的前提下，其加载的类才有可能被回收；</p>
+</li>
+</ul>
+<p><a href="http://blog.jobbole.com/96145/" target="_blank" rel="external">源码分析ClassLoader机制</a></p>
+<h4 id="Android的classLoader机制"><a href="#Android的classLoader机制" class="headerlink" title="Android的classLoader机制"></a>Android的classLoader机制</h4><p>Android的Dalvik/ART虚拟机如同标准JAVA的JVM虚拟机一样，在运行程序时首先需要将对应的类加载到内存中。因此可以利用这一点，在程序运行时手动加载Class，从而达到代码中动态加载可执行文件的目的。</p>
+<p><img src="http://7xt7m8.com2.z0.glb.clouddn.com/fix4.png" alt="Android的ClassLoader体系.png"></p>
+<p>在Android系统启动的时候会创建一个Boot类型的ClassLoader实例，用于加载一些系统Framework层级需要的类。由于Android应用里也需要用到一些系统的类，所以APP启动的时候也会把这个Boot类型的ClassLoader传进来。</p>
+<p>此外，APP也有自己的类，这些类保存在APK的dex文件里面，所以APP启动的时候，也会创建一个自己的ClassLoader实例，用于加载自己dex文件中的类。<br>下面实际验证看看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"> @Override</div><div class="line"> protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">      super.onCreate(savedInstanceState);</div><div class="line">      setContentView(R.layout.activity_main);</div><div class="line"></div><div class="line">      ClassLoader classLoader = getClassLoader();</div><div class="line">      Log.i(&quot;ClassLoader&quot; , &quot;classLoader &quot; + classLoader.toString());</div><div class="line"></div><div class="line">      while (classLoader.getParent() != null) &#123;</div><div class="line">          classLoader = classLoader.getParent();</div><div class="line">          if (classLoader != null) &#123;</div><div class="line">              Log.i(&quot;ClassLoader&quot;, &quot;classLoaderParent &quot; + classLoader.toString());</div><div class="line">          &#125;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">I/ClassLoader: classLoader dalvik.system.PathClassLoader[DexPathList[[zip file &quot;/data/app/com.sunteng.classloader-1/base.apk&quot;],nativeLibraryDirectories=[/vendor/lib, /system/lib]]]</div><div class="line">I/ClassLoader: classLoaderParent java.lang.BootClassLoader@2d0a3af7</div></pre></td></tr></table></figure></p>
+<p>可以看见有2个Classloader实例，一个是BootClassLoader（系统启动的时候创建的），另一个是PathClassLoader（应用启动时创建的，用于加载当前已安装app里面的类）。</p>
+<h5 id="Android经常使用的是PathClassLoader和DexClassLoader"><a href="#Android经常使用的是PathClassLoader和DexClassLoader" class="headerlink" title="Android经常使用的是PathClassLoader和DexClassLoader"></a><strong>Android经常使用的是PathClassLoader和DexClassLoader</strong></h5><ul>
+<li>PathClassLoader<blockquote>
+<p>官方注释：一个简单的ClassLoader的实现，工作在本地文件系统中的文件和目录的列表上，但不尝试从网络加载类。 Android使用这个类为它的系统类加载器和应用类加载器。</p>
+</blockquote>
+</li>
+</ul>
+<p>可以看出，Android是使用这个类作为其系统类和应用类的加载器。并且对于这个类呢，只能去加载已经安装到Android系统中的apk文件。</p>
+<ul>
+<li>DexClassLoader<blockquote>
+<p>官方注释：一个ClassLoader的实现，从.jar和.apk文件内部加载classes.dex。这可以用于执行非安装程序作为已安装应用程序的一部分的代码。</p>
+</blockquote>
+</li>
+</ul>
+<p>也就是说可以加载比如sd目录下的dex文件，获取到不是已安装app里面的类。</p>
+<p>Android中使用PathClassLoader类作为Android的默认的类加载器，PathClassLoade本身继承自BaseDexClassLoader，BaseDexClassLoader重写了findClass方法，该方法是ClassLoader的核心。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#BaseDexClassLoader</div><div class="line">@Override</div><div class="line">protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123;</div><div class="line">    List&lt;Throwable&gt; suppressedExceptions = new ArrayList&lt;Throwable&gt;();</div><div class="line">    Class c = pathList.findClass(name, suppressedExceptions);</div><div class="line">    if (c == null) &#123;</div><div class="line">        ClassNotFoundException cnfe = new ClassNotFoundException(&quot;Didn&apos;t find class \&quot;&quot; + name + &quot;\&quot; on path: &quot; + pathList);</div><div class="line">        for (Throwable t : suppressedExceptions) &#123;</div><div class="line">            cnfe.addSuppressed(t);</div><div class="line">        &#125;</div><div class="line">        throw cnfe;</div><div class="line">    &#125;</div><div class="line">    return c;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看源码可知，BaseDexClassLoader将findClass方法委托给了pathList对象的findClass方法，pathList对象是在BaseDexClassLoader的构造函数中new出来的，它的类型是DexPathList。看下DexPathList.findClass源码是如何做的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">#DexPathList</div><div class="line">public Class findClass(String name, List&lt;Throwable&gt; suppressed) &#123;</div><div class="line">    for (Element element : dexElements) &#123;</div><div class="line">        DexFile dex = element.dexFile;</div><div class="line"></div><div class="line">        if (dex != null) &#123;</div><div class="line">            Class clazz = dex.loadClassBinaryName(name, definingContext, suppressed);</div><div class="line">            if (clazz != null) &#123;</div><div class="line">                return clazz;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    if (dexElementsSuppressedExceptions != null) &#123;</div><div class="line">        suppressed.addAll(Arrays.asList(dexElementsSuppressedExceptions));</div><div class="line">    &#125;</div><div class="line">    return null;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#DexFile </div><div class="line">public Class loadClassBinaryName(String name, ClassLoader loader) &#123;</div><div class="line">    return defineClass(name, loader, mCookie);</div><div class="line">&#125;</div><div class="line">private native static Class defineClass(String name, ClassLoader loader, int cookie);</div></pre></td></tr></table></figure></p>
+<p>直接就是遍历dexElements列表，然后通过调用element.dexFile对象上的loadClassBinaryName方法来加载类，如果返回值不是null，就表示加载类成功，会将这个Class对象返回。而且dexElements对象是在DexPathList类的构造函数中完成初始化的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this.dexElements = makeDexElements(splitDexPath(dexPath), optimizedDirectory, suppressedExceptions);</div></pre></td></tr></table></figure></p>
+<p>makeDexElements所做的事情就是遍历我们传递来的dexPath，然后一次加载每个dex文件。可以看出，BaseDexClassLoader中有个pathList对象，pathList中包含一个DexFile的集合dexElements，而对于类加载，就是遍历这个集合，通过DexFile去寻找。</p>
+<p>这样的话，我们可以在这个dexElements中去做一些事情，比如在这个数组的第一个元素放置我们的patch.jar，里面包含修复过的类。当遍历findClass的时候，修复的类就会被查找到，从而替代有bug的类。</p>
+<blockquote>
+<p>一个ClassLoader可以包含多个dex文件，每个dex文件是一个Element，多个dex文件排列成一个有序的数组dexElements，当找类的时候，会按顺序遍历dex文件，然后从当前遍历的dex文件中找类，如果找类则返回，如果找不到从下一个dex文件继续查找</p>
+</blockquote>
+<p>标准JVM中，ClassLoader是用defineClass加载类的，而Android中defineClass被弃用了，改用了loadClass方法，而且加载类的过程也挪到了DexFile中，在DexFile中加载类的具体方法也叫defineClass</p>
+<h4 id="ClassLoader特性"><a href="#ClassLoader特性" class="headerlink" title="ClassLoader特性"></a>ClassLoader特性</h4><p>使用ClassLoader的一个特点就是，当ClassLoader在成功加载某个类之后，会把得到类的实例缓存起来。下次再请求加载该类的时候，ClassLoader会直接使用缓存的类的实例，而不会尝试再次加载。也就是说，如果程序不重新启动，加载过一次的类就无法重新加载。</p>
+<blockquote>
+<p>如果使用ClassLoader来动态升级APP或者动态修复BUG，都需要重新启动APP才能生效。</p>
+</blockquote>
+<p>除了使用ClassLoader外，还可以使用jni hook的方式修改程序的执行代码。后者做的已经是Native层级的工作了，直接修改应用运行时的内存地址，所以使用jni hook的方式时，不用重新应用就能生效。<br>而阿里的dexposed和AndFix采用了jni hook方案</p>
+<p><strong>Android程序比起一般Java程序在使用动态加载时麻烦在哪里</strong><br>使用ClassLoader动态加载一个外部的类是非常容易的事情，所以很容易就能实现动态加载新的可执行代码的功能，但是比起一般的Java程序，在Android程序中使用动态加载主要有两个麻烦的问题：</p>
+<ul>
+<li>Android中许多组件类（如Activity、Service等）是需要在Manifest文件里面注册后才能工作的（系统会检查该组件有没有注册），所以即使动态加载了一个新的组件类进来，没有注册的话还是无法工作；</li>
+<li>Res资源是Android开发中经常用到的，而Android是把这些资源用对应的R.id注册好，运行时通过这些ID从Resource实例中获取对应的资源。如果是运行时动态加载进来的新类，那类里面用到R.id的地方将会抛出找不到资源或者用错资源的异常，因为新类的资源ID根本和现有的Resource实例中保存的资源ID对不上；</li>
+</ul>
+<p>说到底，一个Android程序和标准的Java程序最大的区别就在于他们的上下文环境（Context）不同。</p>
+<blockquote>
+<p>Android中context可以给程序提供组件需要用到的功能，也可以提供一些主题、Res等资源，而现在的各种Android动态加载框架中，核心要解决的东西也正是如何给外部的新类提供上下文环境的问题。</p>
+</blockquote>
+<h3 id="希望最终的效果"><a href="#希望最终的效果" class="headerlink" title="希望最终的效果"></a>希望最终的效果</h3><p>能够简单地集成热修复sdk，开发者修改代码后能轻松地完成向用户发Patch操作，在用户无感知的情况下修复bug。</p>
+<h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3><ul>
+<li>对开发者友好，使用热修复要简单直接，能尽快解决问题；</li>
+<li>对用户友好，尽量减少用户感知；</li>
+<li>减小bug的影响，尽量扩大修复时覆盖的用户范围。</li>
+</ul>
+<p><strong>就一个理念：只有适合当前情况的才是最好的。</strong></p>
+<h4 id="插件化和热修复"><a href="#插件化和热修复" class="headerlink" title="插件化和热修复"></a>插件化和热修复</h4><p>前面关于Android中ClassLoader的介绍，Android使用PathClassLoader作为其类加载器，DexClassLoader可以从.jar和.apk类型的文件内部加载classes.dex文件。</p>
+<p>如果大家对于插件化有所了解，其实Android应用的插件化，就可以利用DexClassLoader来动态加载非安装应用的类来实现，当然也就可以做到只有单用户点击相应插件模块，才会从网络获取相应插件文件，再通过DexClassLoader实现类加载。</p>
+<p>而热修复可以利用BaseDexClassLoader中的pathList对象，pathList中包含一个DexFile的集合dexElements，我们可以在这个dexElements中去做一些事情，比如在这个数组的第一个元素放置我们的patch.jar，里面包含修复过的类。</p>
+<blockquote>
+<p>这样的话，当遍历findClass的时候，我们修复的类就会被查找到，从而替代有bug的类。不过这样处理还存在一个CLASS_ISPREVERIFIED的问题<a href="https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=400118620&amp;idx=1&amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;scene=1&amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect" target="_blank" rel="external">安卓App热补丁动态修复技术介绍</a>。</p>
+</blockquote>
+<h3 id="热修复具体实施"><a href="#热修复具体实施" class="headerlink" title="热修复具体实施"></a>热修复具体实施</h3><p>上面分析了Android中的类的加载的流程，可以看出：</p>
+<ul>
+<li>DexPathList对象中的dexElements列表是类加载的一个核心，一个类如果能被成功加载，那么它的dex一定会出现在dexElements所对应的dex文件中。</li>
+<li>exElements中出现的顺序也很重要，在dexElements前面出现的dex会被优先加载，一旦Class被加载成功，就会立即返回。</li>
+<li>我们的如果想做hot fix，一定要保证我们的pacth dex文件出现在dexElements列表的前面。</li>
+</ul>
+<blockquote>
+<p>要实现热修复，就需要我们在运行时去更改PathClassLoader.pathList.dexElements，由于这些属性都是private的，因此需要通过反射来修改。</p>
+</blockquote>
+<p>另外，构造我们自己的dex文件所对应的dexElements数组的时候，我们也可以采取一个比较取巧的方式：</p>
+<ul>
+<li>通过构造一个DexClassLoader对象来加载我们的dex文件</li>
+<li>调用一次dexClassLoader.loadClass(dummyClassName)方法</li>
+<li>这样dexClassLoader.pathList.dexElements中就会包含我们的dex<blockquote>
+<p>通过把dexClassLoader.pathList.dexElements插入到系统默认的classLoader.pathList.dexElements列表前面，就可以让系统优先加载我们的dex中的类，从而可以实现热修复了。</p>
+</blockquote>
+</li>
+</ul>
+<p>###自己的思考<br>通过分析三者的差异化对比，以及思考到底什么才是合适的，通过hook方法的方式实现起来确实最直接，但是问题却也很明显，首先成功覆盖率和稳定性是个问题，而且操作起来复杂性比较高。</p>
+<p>而通过classloader考虑的是从系统动态加载的特性入手，所以理所当然以局限于系统的特性，比如由于对于已经加载的类，类加载器不会再调用loadClass方法，所以想要修复要等到下次启动程序才行。</p>
+<p><strong>Android项目中，动态加载技术按照加载的可执行文件的不同大致可以分为两种：</strong><br>1.动态加载so库；<br>2.动态加载dex/jar/apk文件（通常都是这种）</p>
+<p><strong>所以理解起来就是：</strong><br>1.动态调用外部的Dex文件则是完全没有问题的。<br>2.在APK文件中往往有一个或者多个Dex文件，我们写的每一句代码都会被编译到这些文件里面。<br>3.Android应用运行的时候就是通过执行这些Dex文件完成应用的功能的。<br>4.虽然一个APK一旦构建出来，我们是无法更换里面的Dex文件，但是我们可以通过加载外部的Dex文件来实现。</p>
+<blockquote>
+<p>外部文件可以放在外部存储，或者从网络下载。</p>
+</blockquote>
+<p>因此最极端的情况就是，直接把APK自身带有的Dex文件当做空壳，只是作为一个程序的入口，所有的功能都通过从服务器下载最新的Dex文件完成。<br>当然，一般来说只要利用Android动态加载技术，通过动态加载新的dex的方式，完成对有bug类的“替换”，来达到避免调用存在bug的代码，这也就是所谓的Hot Fix。</p>
+<blockquote>
+<p>总体的思路就是这样，至于具体的实现，就有很多环节需要细化的，因为Android本身也有很多自身的特性。</p>
+</blockquote>
+<p>接下来就是考虑实际编码实现了。</p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2016/04/21/VideView播放视频遇到的坑/" rel="next" title="VideView播放视频遇到的坑">
+    上一篇：VideView播放视频遇到的坑
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2016/04/21/Android事件总线编程的考虑/" rel="next" title="Android事件总线编程的考虑">
+    下一篇：Android事件总线编程的考虑
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>List 分页加载数据控制机制 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="List 分页加载数据控制机制"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/技术调研/">技术调研</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>List 分页加载数据控制机制</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2017-03-01T08:57:15.000Z"><a href="/2017/03/01/List 分页加载数据控制机制/">2017-03-01</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/技术思路/" class="chip light-green">技术思路</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#适合分页加载的场景"><span class="section table-of-contents-text">适合分页加载的场景</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#分页加载的数据请求行为"><span class="section table-of-contents-text">分页加载的数据请求行为</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#方案一：缓存容器控制"><span class="section table-of-contents-text">方案一：缓存容器控制</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#方案二：实时分页加载"><span class="section table-of-contents-text">方案二：实时分页加载</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#解决下拉加载更多时，服务端数据变化导致数据重复的解决方法有三种："><span class="section table-of-contents-text">解决下拉加载更多时，服务端数据变化导致数据重复的解决方法有三种：</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#1、使用缓存："><span class="section table-of-contents-text">1、使用缓存：</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#2、使用id作为限定进行分页："><span class="section table-of-contents-text">2、使用id作为限定进行分页：</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#3、客户端排除："><span class="section table-of-contents-text">3、客户端排除：</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>分页加载是一种应用很广泛的数据展示控制机制，相信绝大多数开发者对于这一套机制都非常熟悉。这篇文章的主要目的结合实际的使用场景，对以往在开发中遇到一些概念进行梳理，归纳的同时加深理解，也希望能帮助更多刚刚接触到开发的同学。</p>
+</blockquote>
+<p>本篇文章不聊怎么具体实现分页加载，因为现在太多成熟的方案，直接借助第三方的开源库可以减少很多细节的考虑，<strong>重复的造轮子是没有意义的</strong>。我们只需要从基本概念上切入，考虑实际场景的需求，针对一些主要问题进行分化，思考基本的解决方案是如何构建的即可，下面我们来一同进行思考。</p>
+<h3 id="适合分页加载的场景"><a href="#适合分页加载的场景" class="headerlink" title="适合分页加载的场景"></a>适合分页加载的场景</h3><p>要实现分页加载这套机制，在不同终端上的实现可以说是：基本原理相同，只是展示时处理起来有所差异而已。</p>
+<blockquote>
+<p>在前端网页界面中，通常都是点击跳转后到下一页查看内容，一般都是直接提供了可点击的页码进行跳转，属于基本的分页式。而在移动设备 App 上，交互上主要靠手势的滑动控制，所以基本都是上滑时分页加载更多内容，可以说属于段页式。</p>
+</blockquote>
+<p>对于移动终端上采用了列表形式（ ListView 等等）展示内容时，在数据量较大的情况下，分页加载具有下面几个特点：</p>
+<ul>
+<li>减少初始加载的耗时（网络加载、数据解析、数据填充等）</li>
+<li>减小缓存数据时的内存消耗</li>
+<li>提升数据的实时性（一次请求缓存的数据，可能会存在实效性问题）</li>
+<li>降低单次网络请求失败的概率（弱网环境下，数据量越大越容易失败）</li>
+<li>减少一些不必要流量消耗（用户通常不会一次浏览特别多的数据）</li>
+<li>可以提升用户在交互上的体验（上滑加载更多）</li>
+</ul>
+<p>在实际场景，如果需要对上述情况需求的，可以考虑一下进行分页加载。下面以在 Android 端实现 List 分页加载为例来梳理一些概念</p>
+<h3 id="分页加载的数据请求行为"><a href="#分页加载的数据请求行为" class="headerlink" title="分页加载的数据请求行为"></a>分页加载的数据请求行为</h3><p>这里需要先明确两个概念：<strong>界面上每页实际展示的数量</strong>和<strong>控制请求时每页加载的数量</strong>。一般来说考虑到多设备适配，请求时每页加载的数量要大于每页实际展示的数量。</p>
+<p><strong>通常对于分页加载的数据请求行为主要有下面三个：</strong></p>
+<ul>
+<li>初始化加载数据（首次启动界面时加载数据）</li>
+<li>下拉刷新数据 （刷新当前页面的数据）</li>
+<li>上拉加载更多 （加载下一页数据）</li>
+</ul>
+<p>初始化的时候数据作为在创建界面时展示的内容，所以需要在保证在基础数据完备的情况下，考虑如何更快完成 loading 过程。这里有一个理念就是<strong>先保证可用性再考虑锦上添花的事情</strong></p>
+<p>通常对于实时性要求不高的应用，可以考虑读取预先缓存的历史数据作为初始化时的填充内容，界面加载完成后再主动请求进行刷新操作去更新界面内容。</p>
+<p>在这种情况下，为了能够快速的滑动浏览内容，同时为了避免反复的网络请求，简单的实现可以设置一个 DataSet 作为网络数据请求成功后的内存缓存仓库，当然如果对应用有更高要求的，可以再考虑做数据持久化。这样就可以引出下面两种方案来设计。</p>
+<h3 id="方案一：缓存容器控制"><a href="#方案一：缓存容器控制" class="headerlink" title="方案一：缓存容器控制"></a>方案一：缓存容器控制</h3><p>原则就是：每次都是先读取当前已经缓存在容器中的数据，而从网络获取的数据是为了更新容器的数据，在更新到显示界面。</p>
+<p>该方案基于前面提到的使用一个 DataSet 作为数据请求成功后的内存缓存仓库，在此基础上，界面获取的数据可以从这个 DataSet 中读取，只需要一次请求缓存较多的数据，不需要每次从网络读取数据。</p>
+<p>只有当数据需要刷新或者 DataSet 数据展示量到达一个设定的阀值时，才开始从网络请求获取数据对 DataSet 容器进行更新，而关于数据排重可以根据每条 item 的唯一 ID 完成。</p>
+<p>类似图片缓存控制一样，所以考虑做三级缓存也是可以的。</p>
+<h3 id="方案二：实时分页加载"><a href="#方案二：实时分页加载" class="headerlink" title="方案二：实时分页加载"></a>方案二：实时分页加载</h3><p>这个方案的原则是：每次请求按需加载，加载更多时进行实时数据获取。</p>
+<p>实际处理起来还是会有一些问题，比如刷新时如何控制新增数据的填充，加载更多时如何控制数据变化导致的数据重复添加。为解决这些问题需要考虑下面几个因素：</p>
+<ul>
+<li>每次请求的数据量（每页的数据量）；</li>
+<li>当前数据展示总量（list 中已经加载的量）；</li>
+<li>服务端数据总量；</li>
+<li>服务端总页数（按照当前每次请求数计算）；</li>
+</ul>
+<p><strong>初始化加载数据时</strong><br>初始化时，每次像服务器请求最新的第一页数据展示到 list，请求失败展示 No Content 页面（可手动刷新），并记录上面描述的几个数值。</p>
+<p><strong>下拉刷新数据</strong><br>对比当前请求回来获取到的服务端数据总量和上次请求成功时保存服务端数据总量，两者的差值是否大于当前请求一页的数据量，如果是则直接替换原来的所有数据，不是的话只要把新增的数据 add 到 list 的 header 即可，注意数据排重。</p>
+<p><strong>上拉加载更多</strong></p>
+<p>获取上次请求时保存的页码数的下一页的数据添加到 list 的 footer 即可。</p>
+<h3 id="解决下拉加载更多时，服务端数据变化导致数据重复的解决方法有三种："><a href="#解决下拉加载更多时，服务端数据变化导致数据重复的解决方法有三种：" class="headerlink" title="解决下拉加载更多时，服务端数据变化导致数据重复的解决方法有三种："></a>解决下拉加载更多时，服务端数据变化导致数据重复的解决方法有三种：</h3><h4 id="1、使用缓存："><a href="#1、使用缓存：" class="headerlink" title="1、使用缓存："></a>1、使用缓存：</h4><p>　　可以定时的把n页缓存到数据库中，这样获取前面n页的时候就不会有重复的问题了，但是后面的分页内容还是无法保证不重复。
+　　</p>
+<h4 id="2、使用id作为限定进行分页："><a href="#2、使用id作为限定进行分页：" class="headerlink" title="2、使用id作为限定进行分页："></a>2、使用id作为限定进行分页：</h4><p>　　客户端记录当前分页的最后一条记录的id，然后在请求下一页的时候，从这个id开始算起进行获取一页大小的内容，比如分页大小为20，按照id倒序获取列表内容：<br>　　select <em> from tablename where id<br>　　优点：这种方式可以确保不会获取到重复的数据；<br>　　缺点：需要调整服务器端和客户端的分页方法，通过当前记录id和pageSize去请求服务器端。并且如果按照其他字段而不是id进行的话要确保该字段不会被修改，并且不会有重复，考虑到性能，最好加上索引，推荐使用整型字段：<br>　　select </em> from tablename where 排序字段&lt;:排序字段当前记录值 order=”” by=”” desc=”” limit=”” 0=”” 20=”” span=””&gt;<br>　　另外，如果需要加列表缓存，只能按照当前页的最后一条记录的ID作为key的标示，这样缓存需要的存储空间需要很多，如果列表添加数据很快，用户访问第一页的时候，总是会获取到新的数据，这样会不断的读数据库，然后写缓存，缓存利用率不高。（而类似于Hibernate的列表缓存，都是在数据表有增删改操作的时候，让列表缓存失效的，我猜也是出于数据库数据有改动的情况下缓存命中率不高，所以让列表缓存失效的，以便节省内存空间。）</p>
+<h4 id="3、客户端排除："><a href="#3、客户端排除：" class="headerlink" title="3、客户端排除："></a>3、客户端排除：</h4><p>　　通过在客户端中保存已加载记录的id，进行数据去重，如果被去重的数据比较多，则可以考虑在请求下一页的数据。<br>　　优点：客户端记录已经加载的数据，再次加载的时候过滤掉已有的数据。这种方法能确保不会出现重复的数据，并且不改动服务器端的原有逻辑；<br>　　缺点：当列表数据增加很快的情况下，比如日志记录表，获取下一页的数据会有很多的重复记录，不适合这种情况，适用于列表数据添加不是很频繁的情况。<br>　　即使是用到了缓存，当缓存时间比较长，或者新增数据比较快时，在缓存失效以后，重新获取分页数据的时候也会有大量的重复内容。</p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2017/03/09/Android 项目组件化重构的一些考虑/" rel="next" title="Android 项目组件化重构的一些考虑">
+    上一篇：Android 项目组件化重构的一些考虑
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2016/11/01/X5 浏览器内核调研报告/" rel="next" title="X5 浏览器内核调研报告">
+    下一篇：X5 浏览器内核调研报告
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

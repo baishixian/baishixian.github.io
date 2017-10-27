@@ -1,0 +1,676 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>利用 Android 系统原生 API 实现分享功能 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="利用 Android 系统原生 API 实现分享功能"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Android/">Android</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>利用 Android 系统原生 API 实现分享功能</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2017-04-01T03:23:15.000Z"><a href="/2017/04/01/利用 Android 系统原生 API 实现分享功能/">2017-04-01</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android/" class="chip light-green">Android</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#什么是-Android-系统的原生分享"><span class="section table-of-contents-text">什么是 Android 系统的原生分享</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#1-获取文件类型（MimeType）"><span class="section table-of-contents-text">1. 获取文件类型（MimeType）</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#2-获取分享文件的Uri进行分享"><span class="section table-of-contents-text">2. 获取分享文件的Uri进行分享</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#最后安利一波"><span class="section table-of-contents-text">最后安利一波</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>对于 App 的分享功能，基本上是一个刚需，本文主要介绍运用系统原生分享功能时候需要注意的一些问题。对于某些特定平台的一些高级分享特性，比如微信或者微博之类的分享来源标注，需要在其开放平台注册应用再接入其 sdk 才可以，这里不予以讨论。打算借助第三方库类似 ShareSDK 实现的同学们，这篇文章可能也帮不上你。</p>
+</blockquote>
+<h2 id="什么是-Android-系统的原生分享"><a href="#什么是-Android-系统的原生分享" class="headerlink" title="什么是 Android 系统的原生分享"></a>什么是 Android 系统的原生分享</h2><p>直接上图，这是一个典型的调用系统原生分享场景下的界面，相信大家应该都很熟悉。<br><img src="http://upload-images.jianshu.io/upload_images/580515-e00bb3db612feb95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>系统内建的分享机制，参照官方的教程，基本上可以满足你的一般需求：<a href="https://developer.android.com/training/building-content-sharing.html" target="_blank" rel="external">Android-training-building-content-sharing</a></p>
+<p><strong>简单描述下创建分享的主要过程：</strong></p>
+<ul>
+<li><p>创建一个 <code>Intent</code> ，指定其 <code>Action</code> 为 <code>Intent.ACTION_SEND</code>，这表示要创建一个发送指定内容的隐式意图。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent sendIntent = new Intent();</div><div class="line">sendIntent.setAction(Intent.ACTION_SEND);</div></pre></td></tr></table></figure>
+</li>
+<li><p>指定需要发送的内容和类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 比如发送文本形式的数据内容</div><div class="line">// 指定发送的内容</div><div class="line">sendIntent.putExtra(Intent.EXTRA_TEXT, &quot;This is my text to send.&quot;);</div><div class="line">// 指定发送内容的类型</div><div class="line">sendIntent.setType(&quot;text/plain&quot;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 比如发送二进制文件数据流内容（比如图片、视频、音频文件等等）</div><div class="line">// 指定发送的内容 (EXTRA_STREAM 对于文件 Uri )</div><div class="line">shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);</div><div class="line">// 指定发送内容的类型 (MIME type)</div><div class="line">shareIntent.setType(&quot;image/jpeg&quot;);</div></pre></td></tr></table></figure>
+<ul>
+<li>向系统发送隐式意图，打开系统分享选择器，出现如上图所示界面。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">startActivity(Intent.createChooser(shareIntent, “Share to...”));</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>四不四看起来很简单，四不四感觉可以分分钟可以搞定。年轻人，我跟你港，别图样图森破，现在大家没遇几个坑都不好意思出来港，不过做人嘛～最重要的开心。</p>
+<p>那下面说一下遇到的一些问题，特别针对是 7.0 以后的系统，以及兼容一些主流 app 时遇到的坑。</p>
+<h3 id="1-获取文件类型（MimeType）"><a href="#1-获取文件类型（MimeType）" class="headerlink" title="1. 获取文件类型（MimeType）"></a>1. 获取文件类型（MimeType）</h3><p>前面说到分享文件时需要知道文件的类型，不然的指定类型为 <code>*/*</code> ，这样分享到某些 App 会因为无法判断文件类型而导致失败，所以最好先根据文件路径获取其文件类型。</p>
+<p><strong>下面是一些常见文件的mimeType</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;.3gp&quot;, &quot;video/3gpp&quot;&#125;,  </div><div class="line">&#123;&quot;.apk&quot;, &quot;application/vnd.android.package-archive&quot;&#125;,  </div><div class="line">&#123;&quot;.asf&quot;, &quot;video/x-ms-asf&quot;&#125;,  </div><div class="line">&#123;&quot;.avi&quot;, &quot;video/x-msvideo&quot;&#125;,  </div><div class="line">&#123;&quot;.bin&quot;, &quot;application/octet-stream&quot;&#125;,  </div><div class="line">&#123;&quot;.bmp&quot;, &quot;image/bmp&quot;&#125;,  </div><div class="line">&#123;&quot;.c&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.class&quot;, &quot;application/octet-stream&quot;&#125;,  </div><div class="line">&#123;&quot;.conf&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.cpp&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.doc&quot;, &quot;application/msword&quot;&#125;,  </div><div class="line">&#123;&quot;.exe&quot;, &quot;application/octet-stream&quot;&#125;,  </div><div class="line">&#123;&quot;.gif&quot;, &quot;image/gif&quot;&#125;,  </div><div class="line">&#123;&quot;.gtar&quot;, &quot;application/x-gtar&quot;&#125;,  </div><div class="line">&#123;&quot;.gz&quot;, &quot;application/x-gzip&quot;&#125;,  </div><div class="line">&#123;&quot;.h&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.htm&quot;, &quot;text/html&quot;&#125;,  </div><div class="line">&#123;&quot;.html&quot;, &quot;text/html&quot;&#125;,  </div><div class="line">&#123;&quot;.jar&quot;, &quot;application/java-archive&quot;&#125;,  </div><div class="line">&#123;&quot;.java&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.jpeg&quot;, &quot;image/jpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.jpg&quot;, &quot;image/jpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.js&quot;, &quot;application/x-javascript&quot;&#125;,  </div><div class="line">&#123;&quot;.log&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.m3u&quot;, &quot;audio/x-mpegurl&quot;&#125;,  </div><div class="line">&#123;&quot;.m4a&quot;, &quot;audio/mp4a-latm&quot;&#125;,  </div><div class="line">&#123;&quot;.m4b&quot;, &quot;audio/mp4a-latm&quot;&#125;,  </div><div class="line">&#123;&quot;.m4p&quot;, &quot;audio/mp4a-latm&quot;&#125;,  </div><div class="line">&#123;&quot;.m4u&quot;, &quot;video/vnd.mpegurl&quot;&#125;,  </div><div class="line">&#123;&quot;.m4v&quot;, &quot;video/x-m4v&quot;&#125;,  </div><div class="line">&#123;&quot;.mov&quot;, &quot;video/quicktime&quot;&#125;,  </div><div class="line">&#123;&quot;.mp2&quot;, &quot;audio/x-mpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.mp3&quot;, &quot;audio/x-mpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.mp4&quot;, &quot;video/mp4&quot;&#125;,  </div><div class="line">&#123;&quot;.mpc&quot;, &quot;application/vnd.mpohun.certificate&quot;&#125;,  </div><div class="line">&#123;&quot;.mpe&quot;, &quot;video/mpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.mpeg&quot;, &quot;video/mpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.mpg&quot;, &quot;video/mpeg&quot;&#125;,  </div><div class="line">     &#123;&quot;.mpg4&quot;, &quot;video/mp4&quot;&#125;,  </div><div class="line">&#123;&quot;.mpga&quot;, &quot;audio/mpeg&quot;&#125;,  </div><div class="line">&#123;&quot;.msg&quot;, &quot;application/vnd.ms-outlook&quot;&#125;,  </div><div class="line">&#123;&quot;.ogg&quot;, &quot;audio/ogg&quot;&#125;,  </div><div class="line">&#123;&quot;.pdf&quot;, &quot;application/pdf&quot;&#125;,  </div><div class="line">&#123;&quot;.png&quot;, &quot;image/png&quot;&#125;,  </div><div class="line">&#123;&quot;.pps&quot;, &quot;application/vnd.ms-powerpoint&quot;&#125;,  </div><div class="line">&#123;&quot;.ppt&quot;, &quot;application/vnd.ms-powerpoint&quot;&#125;,  </div><div class="line">&#123;&quot;.prop&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.rar&quot;, &quot;application/x-rar-compressed&quot;&#125;,  </div><div class="line">&#123;&quot;.rc&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.rmvb&quot;, &quot;audio/x-pn-realaudio&quot;&#125;,  </div><div class="line">&#123;&quot;.rtf&quot;, &quot;application/rtf&quot;&#125;,  </div><div class="line">&#123;&quot;.sh&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.tar&quot;, &quot;application/x-tar&quot;&#125;,  </div><div class="line">&#123;&quot;.tgz&quot;, &quot;application/x-compressed&quot;&#125;,  </div><div class="line">&#123;&quot;.txt&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.wav&quot;, &quot;audio/x-wav&quot;&#125;,  </div><div class="line">&#123;&quot;.wma&quot;, &quot;audio/x-ms-wma&quot;&#125;,  </div><div class="line">&#123;&quot;.wmv&quot;, &quot;audio/x-ms-wmv&quot;&#125;,  </div><div class="line">&#123;&quot;.wps&quot;, &quot;application/vnd.ms-works&quot;&#125;,  </div><div class="line">//&#123;&quot;.xml&quot;, &quot;text/xml&quot;&#125;,  </div><div class="line">&#123;&quot;.xml&quot;, &quot;text/plain&quot;&#125;,  </div><div class="line">&#123;&quot;.z&quot;, &quot;application/x-compress&quot;&#125;,  </div><div class="line">&#123;&quot;.zip&quot;, &quot;application/zip&quot;&#125;,  </div><div class="line">&#123;&quot;&quot;, &quot;*/*&quot;&#125;</div></pre></td></tr></table></figure></p>
+<p>####<strong>获取文件类型的方法：</strong><br><strong>方式一（方便但不稳定）：通过 ContentResolver 查询 Android 系统提供的 ContentProvider 获取</strong></p>
+<blockquote>
+<p>当 targetSdkVersion &gt;= 24 时使用 Uri.fromFile(File file) 获取文件<br> uri 会报 android.os.FileUriExposedException 异常 ，应该要使用<br><a href="https://developer.android.com/reference/android/support/v4/content/FileProvider.html" target="_blank" rel="external">FileProvider</a> ，具体请参考 Android 7.0 FileProvider 适配相关，这里不再展开说明。关于 <a href="http://www.jianshu.com/p/8820cf8fac10" target="_blank" rel="external">FileProvider</a> 推荐一篇总结比较好的文章。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// 获取文件的 url</div><div class="line">File shareFile = new File(shareFilePath);</div><div class="line">Uri fileUri = Uri.fromFile(shareFile);</div><div class="line"></div><div class="line">// 获取系统的提供的 ContentResolver</div><div class="line">ContentResolver contentResolver = getApplicationContext().getContentResolver();</div><div class="line">// 获取文件MimeType，如 image/png</div><div class="line">String fileMimeType = contentResolver.getType(fileUri);</div><div class="line"></div><div class="line">// 获取文件Type，如 png</div><div class="line">MimeTypeMap mime = MimeTypeMap.getSingleton();</div><div class="line">String fileType = mime.getExtensionFromMimeType(fileMimeType);</div></pre></td></tr></table></figure>
+<p>使用这种方法获取文件类型，一定要注意 ContentResolver 获取返回为 null 的情况，不然空指针异常的崩溃率可能会让你笑不出来。实际测试中，发现在某些国产机型下，这个方法可以说直接是不可用，查询返回一直都是空，所以单纯依赖这一个方法会很不可靠。具体问题原因请看：<a href="https://stackoverflow.com/questions/13080540/what-causes-androids-contentresolver-query-to-return-null" target="_blank" rel="external">What causes Android’s ContentResolver.query() to return null?</a></p>
+<p><strong>方式二 解析文件信息，通过匹配识别判断：</strong><br>在好用的方法却不可靠的情况下，只能配合看起来蠢一点的方法。目前大致的思路有两种：<br>1.识别文件后缀，根据后缀名来判断文件类型。<br>2.获取文件头信息，转成十六进制字符串后判断文件类型。<br>这两种都是根据特点信息去做匹配，因此需要先保存一份文件特点信息和文件类型的对应参照表。</p>
+<p>下面按照第二条思路，按照文件头信息简单实现一个获取文件类型的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 获取文件类型</div><div class="line"> * @param filePath</div><div class="line"> * @return</div><div class="line"> */</div><div class="line"> public static String getFileType(String filePath) &#123;  </div><div class="line">        return mFileTypes.get(getFileHeader(filePath));  </div><div class="line"> &#125;  </div><div class="line"></div><div class="line"> private static final HashMap&lt;String, String&gt; mFileTypes = new HashMap&lt;String, String&gt;();  </div><div class="line"></div><div class="line"> // judge file type by file header content  </div><div class="line"> static &#123;  </div><div class="line">          mFileTypes.put(&quot;ffd8ffe000104a464946&quot;, &quot;jpg&quot;); //JPEG (jpg)         </div><div class="line">          mFileTypes.put(&quot;89504e470d0a1a0a0000&quot;, &quot;png&quot;); //PNG (png)         </div><div class="line">          mFileTypes.put(&quot;47494638396126026f01&quot;, &quot;gif&quot;); //GIF (gif)         </div><div class="line">          mFileTypes.put(&quot;49492a00227105008037&quot;, &quot;tif&quot;); //TIFF (tif)         </div><div class="line">          mFileTypes.put(&quot;424d228c010000000000&quot;, &quot;bmp&quot;); //16色位图(bmp)         </div><div class="line">          mFileTypes.put(&quot;424d8240090000000000&quot;, &quot;bmp&quot;); //24位位图(bmp)         </div><div class="line">          mFileTypes.put(&quot;424d8e1b030000000000&quot;, &quot;bmp&quot;); //256色位图(bmp)         </div><div class="line">          mFileTypes.put(&quot;41433130313500000000&quot;, &quot;dwg&quot;); //CAD (dwg)         </div><div class="line">          mFileTypes.put(&quot;3c21444f435459504520&quot;, &quot;html&quot;); //HTML (html)    </div><div class="line">          mFileTypes.put(&quot;3c21646f637479706520&quot;, &quot;htm&quot;); //HTM (htm)    </div><div class="line">          mFileTypes.put(&quot;48544d4c207b0d0a0942&quot;, &quot;css&quot;); //css    </div><div class="line">          mFileTypes.put(&quot;696b2e71623d696b2e71&quot;, &quot;js&quot;); //js    </div><div class="line">          mFileTypes.put(&quot;7b5c727466315c616e73&quot;, &quot;rtf&quot;); //Rich Text Format (rtf)         </div><div class="line">          mFileTypes.put(&quot;38425053000100000000&quot;, &quot;psd&quot;); //Photoshop (psd)         </div><div class="line">          mFileTypes.put(&quot;46726f6d3a203d3f6762&quot;, &quot;eml&quot;); //Email [Outlook Express 6] (eml)           </div><div class="line">          mFileTypes.put(&quot;d0cf11e0a1b11ae10000&quot;, &quot;doc&quot;); //MS Excel 注意：word、msi 和 excel的文件头一样         </div><div class="line">          mFileTypes.put(&quot;d0cf11e0a1b11ae10000&quot;, &quot;vsd&quot;); //Visio 绘图         </div><div class="line">          mFileTypes.put(&quot;5374616E64617264204A&quot;, &quot;mdb&quot;); //MS Access (mdb)          </div><div class="line">          mFileTypes.put(&quot;252150532D41646F6265&quot;, &quot;ps&quot;);  </div><div class="line">          mFileTypes.put(&quot;255044462d312e350d0a&quot;, &quot;pdf&quot;); //Adobe Acrobat (pdf)       </div><div class="line">          mFileTypes.put(&quot;2e524d46000000120001&quot;, &quot;rmvb&quot;); //rmvb/rm相同      </div><div class="line">          mFileTypes.put(&quot;464c5601050000000900&quot;, &quot;flv&quot;); //flv与f4v相同      </div><div class="line">          mFileTypes.put(&quot;00000020667479706d70&quot;, &quot;mp4&quot;);  </div><div class="line">          mFileTypes.put(&quot;49443303000000002176&quot;, &quot;mp3&quot;);  </div><div class="line">          mFileTypes.put(&quot;000001ba210001000180&quot;, &quot;mpg&quot;); //         </div><div class="line">          mFileTypes.put(&quot;3026b2758e66cf11a6d9&quot;, &quot;wmv&quot;); //wmv与asf相同        </div><div class="line">          mFileTypes.put(&quot;52494646e27807005741&quot;, &quot;wav&quot;); //Wave (wav)      </div><div class="line">          mFileTypes.put(&quot;52494646d07d60074156&quot;, &quot;avi&quot;);  </div><div class="line">          mFileTypes.put(&quot;4d546864000000060001&quot;, &quot;mid&quot;); //MIDI (mid)       </div><div class="line">          mFileTypes.put(&quot;504b0304140000000800&quot;, &quot;zip&quot;);  </div><div class="line">          mFileTypes.put(&quot;526172211a0700cf9073&quot;, &quot;rar&quot;);  </div><div class="line">          mFileTypes.put(&quot;235468697320636f6e66&quot;, &quot;ini&quot;);  </div><div class="line">          mFileTypes.put(&quot;504b03040a0000000000&quot;, &quot;jar&quot;);  </div><div class="line">          mFileTypes.put(&quot;4d5a9000030000000400&quot;, &quot;exe&quot;);//可执行文件    </div><div class="line">          mFileTypes.put(&quot;3c25402070616765206c&quot;, &quot;jsp&quot;);//jsp文件    </div><div class="line">          mFileTypes.put(&quot;4d616e69666573742d56&quot;, &quot;mf&quot;);//MF文件    </div><div class="line">          mFileTypes.put(&quot;3c3f786d6c2076657273&quot;, &quot;xml&quot;);//xml文件    </div><div class="line">          mFileTypes.put(&quot;494e5345525420494e54&quot;, &quot;sql&quot;);//xml文件    </div><div class="line">          mFileTypes.put(&quot;7061636b616765207765&quot;, &quot;java&quot;);//java文件    </div><div class="line">          mFileTypes.put(&quot;406563686f206f66660d&quot;, &quot;bat&quot;);//bat文件    </div><div class="line">          mFileTypes.put(&quot;1f8b0800000000000000&quot;, &quot;gz&quot;);//gz文件    </div><div class="line">          mFileTypes.put(&quot;6c6f67346a2e726f6f74&quot;, &quot;properties&quot;);//bat文件    </div><div class="line">          mFileTypes.put(&quot;cafebabe0000002e0041&quot;, &quot;class&quot;);//bat文件    </div><div class="line">          mFileTypes.put(&quot;49545346030000006000&quot;, &quot;chm&quot;);//bat文件    </div><div class="line">          mFileTypes.put(&quot;04000000010000001300&quot;, &quot;mxp&quot;);//bat文件    </div><div class="line">          mFileTypes.put(&quot;504b0304140006000800&quot;, &quot;docx&quot;);//docx文件    </div><div class="line">          mFileTypes.put(&quot;d0cf11e0a1b11ae10000&quot;, &quot;wps&quot;);//WPS文字wps、表格et、演示dps都是一样的    </div><div class="line">          mFileTypes.put(&quot;6431303a637265617465&quot;, &quot;torrent&quot;);  </div><div class="line"></div><div class="line"></div><div class="line">          mFileTypes.put(&quot;6D6F6F76&quot;, &quot;mov&quot;); //Quicktime (mov)      </div><div class="line">          mFileTypes.put(&quot;FF575043&quot;, &quot;wpd&quot;); //WordPerfect (wpd)       </div><div class="line">          mFileTypes.put(&quot;CFAD12FEC5FD746F&quot;, &quot;dbx&quot;); //Outlook Express (dbx)         </div><div class="line">          mFileTypes.put(&quot;2142444E&quot;, &quot;pst&quot;); //Outlook (pst)          </div><div class="line">          mFileTypes.put(&quot;AC9EBD8F&quot;, &quot;qdf&quot;); //Quicken (qdf)         </div><div class="line">          mFileTypes.put(&quot;E3828596&quot;, &quot;pwl&quot;); //Windows Password (pwl)             </div><div class="line">          mFileTypes.put(&quot;2E7261FD&quot;, &quot;ram&quot;); //Real Audio (ram)       </div><div class="line">          mFileTypes.put(&quot;null&quot;, null); //null  </div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * 获取文件头信息</div><div class="line">   * @param filePath</div><div class="line">   * @return</div><div class="line">   */</div><div class="line">  public static String getFileHeader(String filePath) &#123;</div><div class="line">     File file=new File(filePath);  </div><div class="line">          if(!file.exists() || file.length()&lt;11)&#123;  </div><div class="line">              return &quot;null&quot;;  </div><div class="line">          &#125;  </div><div class="line">          FileInputStream is = null;  </div><div class="line">          String value = null;  </div><div class="line">          try &#123;  </div><div class="line">              is = new FileInputStream(file);  </div><div class="line">              byte[] b = new byte[10];  </div><div class="line">              is.read(b, 0, b.length);  </div><div class="line">              value = bytesToHexString(b);  </div><div class="line">          &#125; catch (Exception e) &#123;  </div><div class="line">          &#125; finally &#123;  </div><div class="line">              if(null != is) &#123;  </div><div class="line">                  try &#123;  </div><div class="line">                      is.close();  </div><div class="line">                  &#125; catch (IOException e) &#123;&#125;  </div><div class="line">              &#125;  </div><div class="line">          &#125;  </div><div class="line">          return value;  </div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * 将byte字节转换为十六进制字符串</div><div class="line">   * @param src</div><div class="line">   * @return</div><div class="line">   */</div><div class="line">  private static String bytesToHexString(byte[] src) &#123;</div><div class="line">      StringBuilder builder = new StringBuilder();</div><div class="line">      if (src == null || src.length &lt;= 0) &#123;</div><div class="line">          return null;</div><div class="line">      &#125;</div><div class="line">      String hv;</div><div class="line">      for (int i = 0; i &lt; src.length; i++) &#123;</div><div class="line">          hv = Integer.toHexString(src[i] &amp; 0xFF).toUpperCase();</div><div class="line">          if (hv.length() &lt; 2) &#123;</div><div class="line">              builder.append(0);</div><div class="line">          &#125;</div><div class="line">          builder.append(hv);</div><div class="line">      &#125;</div><div class="line">      return builder.toString();</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="2-获取分享文件的Uri进行分享"><a href="#2-获取分享文件的Uri进行分享" class="headerlink" title="2. 获取分享文件的Uri进行分享"></a>2. 获取分享文件的Uri进行分享</h3><blockquote>
+<p>前面也有提到，在 Android 7.0 以后，系统对 scheme 为 file:// 的 uri 进行了限制，所以之前进行文件分享的一些接口就不能用了，此时就得使用其他的URI scheme 来代替 file://，比如 MediaStore 的 content:// 或者FileProvider 。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">public static void shareFile(Context context, String filePath) &#123;</div><div class="line">        if (context == null || TextUtils.isEmpty(filePath))&#123;</div><div class="line">            LogUtil.e(&quot;shareFile context is null or filePath is empty.&quot;);</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        File file = new File(filePath);</div><div class="line">        if (file != null &amp;&amp; file.exists())&#123;</div><div class="line">            Intent intent = new Intent();</div><div class="line">            intent.setAction(Intent.ACTION_SEND);</div><div class="line">            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</div><div class="line">            intent.addCategory(&quot;android.intent.category.DEFAULT&quot;);</div><div class="line">           </div><div class="line">// 如果需要指定分享到某个app，配置 componentName 即可</div><div class="line">           if (!TextUtils.isEmpty(componentName) &amp;&amp; &quot;com.tencent.mm&quot;.equals(componentName))&#123;</div><div class="line">                // 分享精确到微信的页面，朋友圈页面，或者选择好友分享页面</div><div class="line">                 ComponentName comp = new ComponentName(&quot;com.tencent.mm&quot;, &quot;com.tencent.mm.ui.tools.ShareToTimeLineUI&quot;);</div><div class="line">                 intent.setComponent(comp);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            intent.putExtra(Intent.EXTRA_STREAM, uri);</div><div class="line">            // 授予目录临时共享权限</div><div class="line">            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION</div><div class="line">                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);</div><div class="line"></div><div class="line">            String fileType;</div><div class="line">            Uri fileUri = getFileUri(context, file);</div><div class="line">            if (fileUri != null &amp;&amp; !TextUtils.isEmpty(fileUri.toString())) &#123;</div><div class="line">                ContentResolver contentResolver = context.getContentResolver();</div><div class="line">                fileType = contentResolver.getType(fileUri);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            if (TextUtils.isEmpty(fileType))&#123;</div><div class="line">                fileType = getFileType(filePath); // 使用上面的根据文件头信息获取文件类型的方法</div><div class="line">            &#125;</div><div class="line"></div><div class="line">           if (TextUtils.isEmpty(fileType))&#123;</div><div class="line">               fileType =  &quot;*/*&quot;</div><div class="line">           &#125;</div><div class="line"></div><div class="line">            LogUtil.d(&quot;shareFile fileType &quot; + fileType);</div><div class="line">            LogUtil.d(&quot;shareFile uri: &quot; + uri);</div><div class="line"></div><div class="line">            intent.setDataAndType(uri, fileType);</div><div class="line"></div><div class="line">            try &#123;</div><div class="line">                context.startActivity(Intent.createChooser(intent, file.getName()));</div><div class="line">            &#125; catch (Exception e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>// 获取文件Uri<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">public static Uri getFileUri(Context context, File file)&#123;</div><div class="line">        Uri uri;</div><div class="line">       // 低版本直接用 Uri.fromFile</div><div class="line">        if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.N) &#123;</div><div class="line">            uri = Uri.fromFile(file);</div><div class="line">        &#125;else &#123;</div><div class="line">            //  使用 FileProvider 会在某些 app 下不支持（在使用FileProvider 方式情况下QQ不能支持图片、视频分享，微信不支持视频分享）</div><div class="line">            uri = FileProvider.getUriForFile(context,</div><div class="line">                            &quot;gdut.bsx.videoreverser.fileprovider&quot;,</div><div class="line">                    file);</div><div class="line"></div><div class="line">            ContentResolver cR = context.getContentResolver();</div><div class="line">            if (uri != null &amp;&amp; !TextUtils.isEmpty(uri.toString())) &#123;</div><div class="line">                String fileType = cR.getType(uri);</div><div class="line">// 使用 MediaStore 的 content:// 而不是自己 FileProvider 提供的uri，不然有些app无法适配</div><div class="line">                if (!TextUtils.isEmpty(fileType))&#123;</div><div class="line">                    if (fileType.contains(&quot;video/&quot;))&#123;</div><div class="line">                        uri = getVideoContentUri(context, file);</div><div class="line">                    &#125;else if (fileType.contains(&quot;image/&quot;))&#123;</div><div class="line">                        uri = getImageContentUri(context, file);</div><div class="line">                    &#125;else if (fileType.contains(&quot;audio/&quot;))&#123;</div><div class="line">                        uri = getAudioContentUri(context, file);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return uri;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">   * Gets the content:// URI from the given corresponding path to a file</div><div class="line">   *</div><div class="line">   * @param context</div><div class="line">   * @param imageFile</div><div class="line">   * @return content Uri</div><div class="line">   */</div><div class="line">  public static Uri getImageContentUri(Context context, File imageFile) &#123;</div><div class="line">      String filePath = imageFile.getAbsolutePath();</div><div class="line">      Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,</div><div class="line">              new String[] &#123; MediaStore.Images.Media._ID &#125;, MediaStore.Images.Media.DATA + &quot;=? &quot;,</div><div class="line">              new String[] &#123; filePath &#125;, null);</div><div class="line">      if (cursor != null &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">          int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));</div><div class="line">          Uri baseUri = Uri.parse(&quot;content://media/external/images/media&quot;);</div><div class="line">          return Uri.withAppendedPath(baseUri, &quot;&quot; + id);</div><div class="line">      &#125; else &#123;</div><div class="line">          if (imageFile.exists()) &#123;</div><div class="line">              ContentValues values = new ContentValues();</div><div class="line">              values.put(MediaStore.Images.Media.DATA, filePath);</div><div class="line">              return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);</div><div class="line">          &#125; else &#123;</div><div class="line">              return null;</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Gets the content:// URI from the given corresponding path to a file</div><div class="line">   *</div><div class="line">   * @param context</div><div class="line">   * @param videoFile</div><div class="line">   * @return content Uri</div><div class="line">   */</div><div class="line">  public static Uri getVideoContentUri(Context context, File videoFile) &#123;</div><div class="line">      String filePath = videoFile.getAbsolutePath();</div><div class="line">      Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,</div><div class="line">              new String[] &#123; MediaStore.Video.Media._ID &#125;, MediaStore.Video.Media.DATA + &quot;=? &quot;,</div><div class="line">              new String[] &#123; filePath &#125;, null);</div><div class="line">      if (cursor != null &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">          int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));</div><div class="line">          Uri baseUri = Uri.parse(&quot;content://media/external/video/media&quot;);</div><div class="line">          return Uri.withAppendedPath(baseUri, &quot;&quot; + id);</div><div class="line">      &#125; else &#123;</div><div class="line">          if (videoFile.exists()) &#123;</div><div class="line">              ContentValues values = new ContentValues();</div><div class="line">              values.put(MediaStore.Video.Media.DATA, filePath);</div><div class="line">              return context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);</div><div class="line">          &#125; else &#123;</div><div class="line">              return null;</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Gets the content:// URI from the given corresponding path to a file</div><div class="line">   *</div><div class="line">   * @param context</div><div class="line">   * @param audioFile</div><div class="line">   * @return content Uri</div><div class="line">   */</div><div class="line">  public static Uri getAudioContentUri(Context context, File audioFile) &#123;</div><div class="line">      String filePath = audioFile.getAbsolutePath();</div><div class="line">      Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,</div><div class="line">              new String[] &#123; MediaStore.Audio.Media._ID &#125;, MediaStore.Audio.Media.DATA + &quot;=? &quot;,</div><div class="line">              new String[] &#123; filePath &#125;, null);</div><div class="line">      if (cursor != null &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">          int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));</div><div class="line">          Uri baseUri = Uri.parse(&quot;content://media/external/audio/media&quot;);</div><div class="line">          return Uri.withAppendedPath(baseUri, &quot;&quot; + id);</div><div class="line">      &#125; else &#123;</div><div class="line">          if (audioFile.exists()) &#123;</div><div class="line">              ContentValues values = new ContentValues();</div><div class="line">              values.put(MediaStore.Audio.Media.DATA, filePath);</div><div class="line">              return context.getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values);</div><div class="line">          &#125; else &#123;</div><div class="line">              return null;</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>要向在 MediaStore 中查询到文件，要不就是通知媒体库更新查询或则往里面插入一条新记录（会比较耗时）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">     * 删除或增加图片、视频等媒体资源文件时 通知系统更新媒体库，重新扫描</div><div class="line">     * @param filePath 文件路径，包括后缀</div><div class="line">     */</div><div class="line">    public static void notifyScanMediaFile(Context context, String filePath)</div><div class="line">    &#123;</div><div class="line">        if (context == null || TextUtils.isEmpty(filePath))&#123;</div><div class="line">            LogUtil.e(&quot;notifyScanMediaFile context is null or filePath is empty.&quot;);</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        MediaScannerConnection.scanFile(context,</div><div class="line">                new String[] &#123; filePath &#125;, null,</div><div class="line">                new MediaScannerConnection.OnScanCompletedListener() &#123;</div><div class="line">                    public void onScanCompleted(String path, Uri uri) &#123;</div><div class="line">                        LogUtil.i(&quot;notifyScanMediaFile Scanned &quot; + path);</div><div class="line">                        LogUtil.i(&quot;notifyScanMediaFile -&gt; uri=&quot; + uri);</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="最后安利一波"><a href="#最后安利一波" class="headerlink" title="最后安利一波"></a>最后安利一波</h3><p>最近自己开发的这个 App 按照了本篇文章中提到的分享方案进行了实现，实际效果大家直接去 Google Play 或国内酷安市场下载安装试试，欢迎拍砖。<br><a href="https://www.coolapk.com/apk/gdut.bsx.videoreverser" target="_blank" rel="external">VEditor - 酷安</a><br><a href="https://play.google.com/store/apps/details?id=gdut.bsx.videoreverser" target="_blank" rel="external">VEditor - Google Play</a><br><img src="http://upload-images.jianshu.io/upload_images/580515-4cf765867f93bdc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2017/04/06/Android Studio 常见问题/" rel="next" title="Android Studio 常见问题">
+    上一篇：Android Studio 常见问题
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2017/03/09/Android 项目组件化重构的一些考虑/" rel="next" title="Android 项目组件化重构的一些考虑">
+    下一篇：Android 项目组件化重构的一些考虑
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

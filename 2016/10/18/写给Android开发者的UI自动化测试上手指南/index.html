@@ -1,0 +1,714 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>写给Android开发者的UI自动化测试上手指南 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="写给Android开发者的UI自动化测试上手指南"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/自动化测试/">自动化测试</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>写给Android开发者的UI自动化测试上手指南</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2016-10-18T10:30:15.000Z"><a href="/2016/10/18/写给Android开发者的UI自动化测试上手指南/">2016-10-18</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android/" class="chip light-green">Android</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#开发者测试的目的"><span class="section table-of-contents-text">开发者测试的目的</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Android自动化测试介绍"><span class="section table-of-contents-text">Android自动化测试介绍</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#解放你的双手"><span class="section table-of-contents-text">解放你的双手</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#UI自动化测试依据"><span class="section table-of-contents-text">UI自动化测试依据</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#UI自动化具体实例"><span class="section table-of-contents-text">UI自动化具体实例</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#总结"><span class="section table-of-contents-text">总结</span></a></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>我们常常听到这样的问题：“为什么软件的开发者们不适合测试他们自己开发的软件？”。事实上，要回答这个问题需要明白开发者去进行测试的目的。本篇文章不会深入到自动化测试的具体细节，是对如何减少重复测试进行简单实践，让业务开发人员能够简单快速上手才是最终目的。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-140f2546b1853051.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="developer-pk-tester.jpg"></p>
+<p><strong>开发人员测试自己所开发软件的行为就像学生在完成考试后对自己的成绩进行评估，所以可能会出现下面的问题：</strong></p>
+<ul>
+<li>开发人员对其所写代码有主观认同感</li>
+<li>开发人员对软件过于乐观的心态</li>
+<li>开发人员对需求易产生偏差与混淆</li>
+<li>开发人员擅长修复但不擅长拆解</li>
+<li>开发人员缺乏对软件后续开发的展望</li>
+<li>开发人员缺乏测试经验和方法</li>
+</ul>
+<hr>
+<h2 id="开发者测试的目的"><a href="#开发者测试的目的" class="headerlink" title="开发者测试的目的"></a>开发者测试的目的</h2><p>就如前面所说，软件开发者测试自己开发的程序好像并没多大意义，测试工程师具有很多优势条件，那作为开发者进行自动化测试的目的是什么？<br>其实从下面的图就能解释一切，程序员这个职业存在的意义不就是最大化利用机器，通过自动化来完成工作吗？</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-10c457f04707efdb.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>作为软件开发者需求很明显，当需要对自己开发的功能进行验证时，总是需要反复调试后才能提测。这不可避免的需要我们重复UI操作去覆盖测试路径，通过查看界面内容和日志输出验证问题。而UI自动化测试恰恰可以满足这一点，减少我们重复操作ui验证的步骤。</p>
+<hr>
+<h2 id="Android自动化测试介绍"><a href="#Android自动化测试介绍" class="headerlink" title="Android自动化测试介绍"></a>Android自动化测试介绍</h2><p>关于Android自动化测试，可以去官网看一下介绍<a href="https://developer.android.com/training/testing/start/index.html" target="_blank" rel="external">Getting Started with Testing</a>。<br><img src="http://upload-images.jianshu.io/upload_images/580515-d80bc48a73e3c808.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>本篇文章不会对深入到自动化测试的细节进行描述，只是作为开发人员对如何减少重复工作量进行简单的实践，所以这里直接推荐腾讯U测社区的一篇文章：<a href="http://bbs.utest.qq.com/1131" target="_blank" rel="external">5个最佳的Android测试框架</a>，有兴趣的童鞋可以了解一下目前主流的自动化测试框架。<br><img src="http://upload-images.jianshu.io/upload_images/580515-5c6fd547731cf3a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Comparing-Android-Testing-Frameworks.png"></p>
+<h2 id="解放你的双手"><a href="#解放你的双手" class="headerlink" title="解放你的双手"></a>解放你的双手</h2><p>作为一个业务开发人员，解放双手进行功能验证性测试才是最根本的需求，所以下面介绍一下使用<a href="https://google.github.io/android-testing-support-library/docs/espresso/" target="_blank" rel="external">Espresso</a>进行UI自动化测试的流程。</p>
+<blockquote>
+<p>为什么选择Espresso测试框架？<br>很简单，<a href="https://google.github.io/android-testing-support-library/docs/espresso/" target="_blank" rel="external">Espresso</a>是Google针对Android平台开源的一款最新的Android自动化测试框架。不用考虑跨平台、兼容性等各种问题，最贴合需求才是最好的。</p>
+</blockquote>
+<h3 id="UI自动化测试依据"><a href="#UI自动化测试依据" class="headerlink" title="UI自动化测试依据"></a>UI自动化测试依据</h3><p>UI自动化测试的基本思路：<strong>把自己当成用户，只关注我能看到的东西。</strong></p>
+<blockquote>
+<p>我们把自己作为使用程序的最终用户，要让机器模拟我的测试过程，那么就需要针对那些我能看到的东西，也就是UI组件进行验证。<br><strong>比如说，</strong>作为用户并不关心某个网络请求返回值的具体数据是否正确，我关心的是能在UI上看到希望看到的结果。</p>
+</blockquote>
+<p>基于此，做各个测试用例的一个通用的思路就是：<strong>找到某个元素，做一些操作，检查结果。</strong>这里包含了三个流程：</p>
+<blockquote>
+<ul>
+<li><strong>找元素：</strong>找到UI上测试所针对的元素；</li>
+<li><strong>做操作：</strong>给这个元素做一些操作；</li>
+<li><strong>检查结果：</strong>这个元素做出了我期望的行为。</li>
+</ul>
+</blockquote>
+<p>再直观一点，我们测试向一个EditText输入一段文字，那么整个过程就可以描述为：</p>
+<blockquote>
+<ul>
+<li><strong>找元素：</strong>找到EditText组件；</li>
+<li><strong>做操作：</strong>向EditText输入字符串；</li>
+<li><strong>检查结果：</strong>EditText显示了我输入的字符串，验证内容是否符合。</li>
+</ul>
+</blockquote>
+<p>以上三个小步骤实际上也是我们作为用户在使用一个APP的时候所遵循的流程。而我们的测试也是基本遵循这样一个流程的。下面是官方文档中给出的一个简单测试用例的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">greeterSaysHello</span><span class="params">()</span> </span>&#123;</div><div class="line">  onView(withId(R.id.name_field))</div><div class="line">    .perform(typeText(<span class="string">"Steve"</span>));</div><div class="line">  onView(withId(R.id.greet_button))</div><div class="line">    .perform(click());</div><div class="line">  onView(withText(<span class="string">"Hello Steve!"</span>))</div><div class="line">    .check(matches(isDisplayed()));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>代码逻辑也是典型的三步：</strong></p>
+<blockquote>
+<ol>
+<li>首先通过withId方法找到了id为name_field的EditText组件，并且调用typeText方法对其进行设置text内容为”Steve”；</li>
+<li>再通过withId方法找到id为greet_button的Button组件，掉头click方法模拟点击该按钮；</li>
+<li>最后通过withText方法查找text内容等于”Hello Steve!”的TextView组件，调用check方法判断该组件是否匹配(matches方法)是否可见状态(isDisplayed)。</li>
+</ol>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7e2869f9a40b1856.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="一些Espresso的主要方法"></p>
+<h2 id="UI自动化具体实例"><a href="#UI自动化具体实例" class="headerlink" title="UI自动化具体实例"></a>UI自动化具体实例</h2><p>这里建议参照官方文档给出的步骤进行实践，示例给出自己在实践demo中配置自动化测试的基本步骤。<a href="https://google.github.io/android-testing-support-library/docs/espresso/setup/index.html#setup-your-test-environment" target="_blank" rel="external">Espresso setup instructions</a></p>
+<p><strong>1. 在gradle添加支持</strong><br>在app目录下build.gradle中dependencies设置对Espresso库的编译依赖，在android.defaultConfig设置InstrumentationRunner。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在app目录下的build.gradle添加对Espresso的依赖</span></div><div class="line">dependencies &#123;</div><div class="line">  androidTestCompile(<span class="string">'com.android.support.test.espresso:espresso-core:2.2.2'</span>, &#123;    </div><div class="line">     exclude group: <span class="string">'com.android.support'</span>, <span class="keyword">module</span>: <span class="string">'support-annotations'</span></div><div class="line">  &#125;)</div><div class="line">  androidTestCompile <span class="string">'com.android.support.test.espresso:espresso-idling-resource:2.2.2'</span></div><div class="line">  ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 在app目录下的build.gradle中设置instrumentation runner</span></div><div class="line">defaultConfig &#123;</div><div class="line">  ...</div><div class="line">  testInstrumentationRunner <span class="string">"android.support.test.runner.AndroidJUnitRunner"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>2. 创建Test Case文件</strong><br>在Android Studio执行测试的代码类文件需要在app模块的androidTest文件夹下创建。如下图所示:<br><img src="http://upload-images.jianshu.io/upload_images/580515-0f7be970ca75ca53.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="project.png"></p>
+<p><strong>3. 编写测试用例代码</strong><br>比如当我们为TestActivity创建TestActivityTest测试用例类文件成功以后：</p>
+<ul>
+<li>首先需要在测试用例类的类体前添加@RunWith的注解，并设置测试运行平台为AndroidJUnit4</li>
+<li>如果允许测试需要较大消耗，可以使用@LargeTest注解</li>
+<li>设置ActivityTestRule用来指明被测试的Activity，使用@Rule注解。<blockquote>
+<p>运行测试时用例时会自动启动到对应的Activity，并且通过ActivityTestRule的示例获取到被测试Activity的context。</p>
+</blockquote>
+</li>
+<li>编写测试方法，按照前面说的“找元素，做操作， 验证结果”三个步骤编 写测试方法，使用@Test注解。<blockquote>
+<p>建议使用test作为方法名的开头，这样可以更好区分普通方法和测试方法</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-acedf05c7034892a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>如上图所示，代码为TestActivity创建了测试用例类TestActivityTest，其中testDeciceName为其中一个测试用例方法。该方法主要是通过id查找到EditText，自动输入内容后模拟点击id为bt_get_string的button，最后验证textview显示内容是否符合。</p>
+<p><strong>4. 运行Test Case</strong><br> 在Android Studio的终端中输入<code>gradlew connectedAndroidTest 或 gradlew cAT</code>执行测试用例。<br>整体运行效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/580515-c37b3b3ef3c3fc58.gif?imageMogr2/auto-orient/strip" alt="run.gif"></p>
+<p><strong>5. 异步和延迟</strong><br>有时点击一个按钮，ui操作后需要执行一个较为耗时的事情时通常会采用异步回调的方式通知显示结果，这时进行UI自动化测试的第三步验证结果的时机就不能才能同步的方式去执行，而是需要做异步回调通知执行或延迟执行。</p>
+<p>Espresso提供了原生的异步测试支持，通过实现IdlingResource接口，复写getName()、isIdleNow()、registerIdleTranstionCallback()方法。<br>如图所示FuncExecuteIdlingResource：<br><img src="http://upload-images.jianshu.io/upload_images/580515-78a116385bd7a201.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>然后在测试用例的类中注册和反注册接口：<br>Espresso.registerIdlingResources(idlingResource);</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-8f6d2886a4d28c9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>当方法执行完成，调用ResourceCallback.onTransitionToIdle();则会进行回调通知测试线程继续执行验证代码。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一切能自动化完成的测试操作就不要浪费时间用手动完成。后续将会对单元测试进行说明，共同学习，相互提升。</p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2016/11/01/X5 浏览器内核调研报告/" rel="next" title="X5 浏览器内核调研报告">
+    上一篇：X5 浏览器内核调研报告
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2016/09/06/Google-TagManager概念梳理（Android/" rel="next" title="Google TagManager概念梳理（Android )">
+    下一篇：Google TagManager概念梳理（Android )
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

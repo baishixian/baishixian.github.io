@@ -1,0 +1,683 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Android 应用性能分析工具 — CPU Profiler | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Android 应用性能分析工具 — CPU Profiler"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Android/">Android</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Android 应用性能分析工具 — CPU Profiler</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2017-09-21T07:42:19.000Z"><a href="/2017/09/21/Android 应用性能分析工具 — CPU Profiler/">2017-09-21</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android/" class="chip light-green">Android</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#CPU-Profiler概述"><span class="section table-of-contents-text">CPU Profiler概述</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#录制和分析跟踪方法"><span class="section table-of-contents-text">录制和分析跟踪方法</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#使用-Call-Chart-选项分析跟踪"><span class="section table-of-contents-text">使用 Call Chart 选项分析跟踪</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#使用-Flame-Char-选项分析跟踪"><span class="section table-of-contents-text">使用 Flame Char 选项分析跟踪</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#使用-Top-Down-tree-和-Bottom-Up-tree-分析"><span class="section table-of-contents-text">使用 Top Down tree 和 Bottom Up tree 分析</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#实际操作"><span class="section table-of-contents-text">实际操作</span></a></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>相信大家对于 Android Studio 的分析工具都不陌生，我们可以借助分析工具对 App 性能数据进行很直观的阅读。文章内容参考了 <a href="https://developer.android.com/studio/profile/cpu-profiler.html" target="_blank" rel="external">Google 官方教程</a>上面的说明。</p>
+</blockquote>
+<p>下图时 Android Studio 3.0 中的 Android Profiler 面板，相较于之前版本，对于开发者而言更友好了。比如我们如果感觉到应用启动比较慢、用户操作有些卡顿，怀疑是代码性能问题但是又不知道什么原因造成的，通常很多性能问题都是主线程的执行耗时操作导致的，要想定位问题就得先知道实际运行时的性能数据，下面我们就拿 CPU Profiler 来学习如何借助分析工具优化性能。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-0fd63a6850dda6d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Android Profiler"></p>
+<h2 id="CPU-Profiler概述"><a href="#CPU-Profiler概述" class="headerlink" title="CPU Profiler概述"></a>CPU Profiler概述</h2><p>当你打开 CPU Profiler 时，它会立即开始显示应用程序的 CPU 使用情况和线程活动，如下图所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-72243f096fd6426a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>图中标示的位置代表了主要功能视图，具体功能如下：<br><strong>(1) 事件时间轴：</strong>显示应用程序在其生命周期中转换不同状态的活动，并指示用户与设备的交互，包括屏幕旋转事件。 要了解有关事件时间轴的更多信息，包括如何启用它，请阅读<a href="https://developer.android.com/studio/preview/features/android-profiler.html#advanced-profiling" target="_blank" rel="external">启用高级分析</a> 。</p>
+<p><strong>(2) CPU 时间轴：</strong>显示应用程序的实时 CPU 使用率（占总可用CPU时间的百分比）以及应用程序使用的线程总数。 时间轴还显示其他进程（如系统进程或其他应用程序）的 CPU 使用情况，因此可以将其与应用程序的使用情况进行比较。 您可以通过沿着时间轴的水平轴移动鼠标来检查历史 CPU 使用率数据。</p>
+<p><strong>(3) 线程活动时间轴：</strong>列出属于应用进程的每个线程，并使用下面列出的颜色在时间线上指示其活动。 记录方法跟踪后，可以从此时间轴中选择一个线程，以在跟踪窗格中检查其数据。<br><strong>绿色：</strong>线程处于活动状态或准备好使用 CPU ，也就是说它处于“运行”或“可运行”状态。<br><strong>黄色：</strong>线程处于活动状态，它正在等待I / O操作（如磁盘或网络I / O）完成后继续工作。<br><strong>灰色：</strong>线程处于休眠状态，不会占用任何 CPU 时间。这种状态可能会发生在线程需要访问尚不可用的资源时，线程主动进入休眠状态或者系统内核让线程进行休眠，直到所需的资源变得可用后再恢复。</p>
+<p><strong>(4) 录制配置：</strong>允许您选择以下选项之一来确定分析器如何记录方法跟踪。<br><strong>Sampled：</strong>这是一种基于数据抽样的跟踪，分析器会在应用执行期间频繁地捕获应用程序的调用堆栈，通过收集比对捕获到的数据集来获得有关应用程序代码执行的时间和资源使用信息，适合跟踪生命周期相对较长的方法，否则你应该使用 Instrumented 配置。<br><strong>Instrumented：</strong>这是一种可在运行时调整应用程序以便记录每个方法开始和结束时的时间戳，适合跟踪生命周期相对较短的方法。通过收集和比较时间戳生成方法跟踪数据，包括时序信息和 CPU 使用情况等等。 请注意，由于与每种方法测量相关的开销会影响运行时性能，并可能影响分析数据，对于生命周期相对较短的方法，这一点更为显着。 此外，如果应用程序在短时间内执行大量方法，则分析器可能会快速超过其文件大小限制，并且无法记录任何其他跟踪数据。<br><strong>自定义编辑配置：</strong>允许自行更改上述采样和检测录制配置的某些默认值，并将其另存为自定义配置。 要了解更多信息，请参阅有关<a href="https://developer.android.com/studio/profile/cpu-profiler.html#configurations" target="_blank" rel="external">创建录制配置</a>的部分。</p>
+<p><strong>(5) 录制按钮：</strong>开始和停止录制方法跟踪。 要了解更多信息，请参阅有关<a href="https://developer.android.com/studio/profile/cpu-profiler.html#method_traces" target="_blank" rel="external">录制和分析跟踪方法</a> 。</p>
+<p><strong>注意：</strong>分析器还展示了 Android Studio 和 Android 平台添加到应用进程的线程的 CPU 使用情况，例如 <code>JDWP, Profile Saver, Studio:VMStats, Studio:Perfa 和 Studio:Heartbeat</code>等名称的线程（尽管如此，确切的名称显示在线程活动时间表可能会有所不同）。</p>
+<h2 id="录制和分析跟踪方法"><a href="#录制和分析跟踪方法" class="headerlink" title="录制和分析跟踪方法"></a>录制和分析跟踪方法</h2><p>简单的说，就是点击 Android Studio 的 Android Profiler 窗口的<strong>录制</strong>按钮开始 CPU 跟踪记录，然后对应用程序进行一些操作，操作完成后再点击<strong>停止录制</strong>按钮结束录制。这时分析器会自动选择记录的时间范围并在方法跟踪窗格中显示其跟踪信息，如下图所示。如果要检查不同线程的方法跟踪，只需从线程活动时间轴中选择它即可。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-5e5fd1d55f47a2f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>录制方法跟踪后的 CPU Profiler 视图，主要有如下信息展示：</p>
+<p><strong>(1) 所选时间范围：</strong>在跟踪窗格中确定要检查的记录时间段的一部分。 当你首次记录方法跟踪时，CPU分析器会自动在CPU时间轴中选择录制的整个长度。 如果要仅在记录的时间段的一部分内检查方法跟踪数据，则可以单击并拖动突出显示区域的边缘以修改其长度。<br><strong>(2) 时间戳记：</strong>指示记录的方法跟踪的开始和结束时间（相对于分析器开始从设备收集CPU使用情况信息）。 你可以单击时间戳以自动选择整个录制作为所选的时间范围 - 如果您要在其间切换多个录像，这一点特别有用。<br><strong>(3) 跟踪窗格：</strong>显示你选择的时间范围和线程的方法跟踪数据。 仅当你记录至少一个方法跟踪后，此窗格才会显示。 在此窗格中，您可以选择如何查看每个堆栈跟踪（使用跟踪选项卡）以及如何测量执行时间（使用时间参考下拉菜单）。<br><strong>(4) 跟踪窗格选项：</strong>可以选择将方法跟踪显示为<code>Top Down tree, Bottom Up tree, Call Chart, or Flame Char</code>模式，具体的区别可以在下面的部分中了解有关每个跟踪窗格选项卡的更多信息。<br><strong>(5) 时序信息菜单：</strong>确定每个方法调用的时序信息如何测量：<br>Wall clock time：表示实际运行时间。<br>Thread time：表示实际运行的时间减去线程不消耗 CPU 资源的时间段的部分。 对于任何指定的方法，其线程时间始终小于或等于<code>Wall clock time</code>。 使用线程时间可以更好地了解指定方法消耗的线程实际 CPU 使用量。</p>
+<h3 id="使用-Call-Chart-选项分析跟踪"><a href="#使用-Call-Chart-选项分析跟踪" class="headerlink" title="使用 Call Chart 选项分析跟踪"></a>使用 Call Chart 选项分析跟踪</h3><p><strong>“Call Chart”</strong> 是按照方法调用的顺序进行跟踪分析的图示，其中方法调用（caller）的生命周期和时间在水平轴中表示，被其调用的方法沿垂直轴显示。 </p>
+<blockquote>
+<p>比如一个方法 A() 里面包含了对 B()  和 D() 方法的调用，那么在 <code>Call Chart</code> 模式下 B 和 D 方法在 A 的下方显示，横向长度代表它们所执行的时长。</p>
+</blockquote>
+<p>为了方便区分，分析工具对系统 API 的方法调用以橙色显示，对应用程序自己的方法的调用以绿色显示，并且对第三方 API（包括 Java 语言API）的方法调用显示为蓝色。 下图显示了一个示例调用图，并说明了给定方法的自我时间，子时间和总时间的概念。 </p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-511b7e2ab9866bbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720" alt="方法 D self, children, and total time 的示意图"></p>
+<h3 id="使用-Flame-Char-选项分析跟踪"><a href="#使用-Flame-Char-选项分析跟踪" class="headerlink" title="使用 Flame Char 选项分析跟踪"></a>使用 Flame Char 选项分析跟踪</h3><p><strong>“Flame Char”</strong> 提供了一个反向调用图，可以聚合相同的调用堆栈。 也就是说共享相同调用者序列的方法被收集表示为 Flame Char 图表中的一个更长的条（而不是将其显示为多个较短的条）。 这使得更容易看出哪些方法消耗最多的时间。 这也意味着水平轴不再代表时间轴，而是指示每个方法执行的相对时间量。</p>
+<p>为了帮助说明这个概念，请看下图中的调用图。 </p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-6db120f9f96f72ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720" alt=""></p>
+<p>图中 B1, B2 和 B3 共享相同的调用者序列 (A→D→B)，所以它们被聚合。 类似地 C1 和 C3 被聚合，因为它们共享相同的调用者序列 (A→D→B→C) , 注意这其中不包括 C2 ，因为它具有不同的呼叫者序列 (A→D→C) 。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-65608c37f497bde2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720" alt=""></p>
+<p>聚合相同的调用者序列的方法用于 Flame Char ，最终效果如下图所示。当我们指定 Flame Char 中的任何方法调用进行分析时，首先出现的肯定是消耗 CPU 时间最多的被调用者，这使得很容易看出哪些方法最消耗时间，方便有针对性优化。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-1bc3ce58fc6fca8e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720" alt=""></p>
+<h3 id="使用-Top-Down-tree-和-Bottom-Up-tree-分析"><a href="#使用-Top-Down-tree-和-Bottom-Up-tree-分析" class="headerlink" title="使用 Top Down tree 和 Bottom Up tree 分析"></a>使用 Top Down tree 和 Bottom Up tree 分析</h3><p>Top Down 自上而下显示方法调用列表，其中展开方法节点显示被其调用者，图中的每个箭头指向一个被调用者。与 Flame 图表类似，自上而下的树聚合了共享相同调用堆栈的相同方法的跟踪信息</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-f05c94f046116742.png?imageMogr2/auto-orient/strip%7CimageView2/2/h/480" alt=""></p>
+<p>Bottom Up 自下而上显示方法调用列表，以帮助描述每个方法调用花费的 CPU 时间（时间也表示为所选时间段内线程总时间的百分比）：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-a644e403c42069f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/h/480" alt=""></p>
+<ul>
+<li>Self：方法调用花费的时间执行自己的代码，而不是其被调用者的时间量</li>
+<li>Children：方法调用花费的执行被调用者的时间，而不是自己的代码</li>
+<li>Total：方法时间的总和，这表示应用程序执行方法调用的总时间量</li>
+</ul>
+<h2 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h2><p>运行项目，应用启动后我们可以在 Android Profiler 窗口中看到应用的实时运行数据，先选中要调试的 app 进程，点击 CPU 一栏会进入到 CPU Profiler 控制面板，这是我们可以点击录制按钮开始录制，进行一些操作后，再次点击按钮停止录制，这是 CPU Profiler 会自动打开分析窗口。如下图所示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-8dfd5790a8a30aa0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="CPU Profiler"></p>
+<p>我们想要看看方法执行的耗时情况，我们选择时序信息菜单为 Thread Time ，按照默认的 Call Chart 数据跟踪模式来看，可以很清楚的看到应用执行耗时情况。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-87cda9e2a8b06187.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Thread Time.png"></p>
+<p>图中展示了应用启动时的 onCreate 方法的耗时情况，其中黄色标示的事系统方法，绿色部分方法是我们的方法，也就是可优化的空间。比如上图中腾讯 x5 webview 初始化耗时很严重可以考虑做懒加载，另外一些获取渠道信息的方法 getChannel* 需要读取本地配置也是耗时操作，将这些方法做成异步处理。因为 onCreate 方法直接影响应用启动耗时，所以我们要避免其方法内的执行耗时操作。</p>
+<p>于是按照上面定位到的问题，进行优化后，可以看到下面的效果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-a652d777d3a6ddc5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="优化后加速应用启动"></p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2017/09/28/Android 获取 PackageInfo 引发 Crash 填坑/" rel="next" title="Android 获取 PackageInfo 引发 Crash 填坑">
+    上一篇：Android 获取 PackageInfo 引发 Crash 填坑
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2017/09/15/关于 Android 8.0 安装 APK 权限问题/" rel="next" title="关于 Android 8.0 安装 APK 权限问题">
+    下一篇：关于 Android 8.0 安装 APK 权限问题
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

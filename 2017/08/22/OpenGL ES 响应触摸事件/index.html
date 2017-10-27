@@ -1,0 +1,679 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>OpenGL ES 响应触摸事件 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="OpenGL ES 响应触摸事件"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/OpenGL-ES/">OpenGL ES</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>OpenGL ES 响应触摸事件</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2017-08-22T09:16:09.000Z"><a href="/2017/08/22/OpenGL ES 响应触摸事件/">2017-08-22</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android/" class="chip light-green">Android</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#配置触摸监听器"><span class="section table-of-contents-text">配置触摸监听器</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#处理触摸事件"><span class="section table-of-contents-text">处理触摸事件</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#设置旋转角度"><span class="section table-of-contents-text">设置旋转角度</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#应用旋转效果"><span class="section table-of-contents-text">应用旋转效果</span></a></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>在前面的文章中对于 OpenGL ES 在 Android 应用中的视图绘制整体流程和视图动作添加进行大致地介绍，如果你对这些概念还有些不熟悉，可以回头再看一下<a href="http://www.jianshu.com/p/5cfdceac57fa" target="_blank" rel="external">前面的文章</a>。文章中所有的代码示例都已放在 Github 上，可以去项目 <a href="https://github.com/baishixian/OpenGL-ES-Learning" target="_blank" rel="external">OpenGL-ES-Learning</a> 中查看 。</p>
+</blockquote>
+<p><a href="http://www.jianshu.com/p/47bd8da30d43" target="_blank" rel="external">上篇文章</a>中我们让一个三角形进行旋转动作，这是让 OpenGL 视图根据预设的程序进行动作。但是如果想要让 OpenGL ES 的图形对象响应用户的行为，就必须让 OpenGL ES 应用可以支持触控交互。为了响应用户的 touch 事件，就必须要在 <a href="http://developer.android.com/reference/android/opengl/GLSurfaceView.html" target="_blank" rel="external">GLSurfaceView</a> 中实现 <a href="http://developer.android.com/reference/android/view/View.html#onTouchEvent(android.view.MotionEvent" target="_blank" rel="external">onTouchEvent()</a>) 方法来监听处理触摸事件。</p>
+<p>这篇文章将介绍如何监听触控事件，让用户可以手动控制旋转一个 OpenGL ES 图形对象。</p>
+<h3 id="配置触摸监听器"><a href="#配置触摸监听器" class="headerlink" title="配置触摸监听器"></a>配置触摸监听器</h3><p>为了让我们的 OpenGL ES 应用响应触控事件，我们必须实现 <a href="http://developer.android.com/reference/android/opengl/GLSurfaceView.html" target="_blank" rel="external">GLSurfaceView</a> 类中的 <a href="http://developer.android.com/reference/android/view/View.html#onTouchEvent(android.view.MotionEvent" target="_blank" rel="external">onTouchEvent()</a>) 方法。下面的例子展示了如何监听 <a href="http://developer.android.com/reference/android/view/MotionEvent.html#ACTION_MOVE" target="_blank" rel="external">MotionEvent.ACTION_MOVE</a> 事件，并将事件转换为形状旋转的角度：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyGLSurfaceView05</span> <span class="keyword">extends</span> <span class="title">GLSurfaceView</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// 旋转变换的比例因子</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">float</span> TOUCH_SCALE_FACTOR = <span class="number">180.0f</span> / <span class="number">320</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mPreviousX;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mPreviousY;</div><div class="line"></div><div class="line">    ...</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">// MotionEvent reports input details from the touch screen</span></div><div class="line">        <span class="comment">// and other input controls. In this case, you are only</span></div><div class="line">        <span class="comment">// interested in events where the touch position changed.</span></div><div class="line"></div><div class="line">        <span class="comment">// getX/getY 触摸点相对于其所在view组件坐标系的坐标（以触摸点所在 view 的左上角为原点的坐标系）</span></div><div class="line">        <span class="comment">// getRawX/getRawY 触摸点相对于屏幕默认坐标系的坐标（以屏幕的左上角为原点的坐标系）</span></div><div class="line">        <span class="keyword">float</span> x = e.getX();</div><div class="line">        <span class="keyword">float</span> y = e.getY();</div><div class="line"></div><div class="line">        <span class="keyword">switch</span> (e.getAction()) &#123;</div><div class="line">            <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line"></div><div class="line">                <span class="keyword">float</span> dx = x - mPreviousX; <span class="comment">// 从左往有滑动时: x 值增大，dx 为正；反之则否。</span></div><div class="line">                <span class="keyword">float</span> dy = y - mPreviousY; <span class="comment">// 从上往下滑动时: y 值增大，dy 为正；反之则否。</span></div><div class="line"></div><div class="line">                <span class="comment">// OpenGL 绕 z 轴的旋转符合左手定则，即 z 轴朝屏幕里面为正。</span></div><div class="line">                <span class="comment">// 用户面对屏幕时，是从正面向里看（此时 camera 所处的 z 坐标位置为负数），当旋转度数增大时会进行逆时针旋转。</span></div><div class="line">                </div><div class="line">                <span class="comment">// 逆时针旋转判断条件1：触摸点处于 view 水平中线以下时，x 坐标应该要符合从右往左移动，此时 x 是减小的，所以 dx 取负数。</span></div><div class="line">                <span class="keyword">if</span> (y &gt; getHeight() / <span class="number">2</span>) &#123;</div><div class="line">                    dx = dx * -<span class="number">1</span> ;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">// 逆时针旋转判断条件2：触摸点处于 view 竖直中线以左时，y 坐标应该要符合从下往上移动，此时 y 是减小的，所以 dy 取负数。</span></div><div class="line">                <span class="keyword">if</span> (x &lt; getWidth() / <span class="number">2</span>) &#123;</div><div class="line">                    dy = dy * -<span class="number">1</span> ;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                mRenderer.setAngle(mRenderer.getAngle() + ((dx + dy) * TOUCH_SCALE_FACTOR));</div><div class="line"></div><div class="line">                <span class="comment">// 在计算旋转角度后，调用requestRender()来告诉渲染器现在可以进行渲染了</span></div><div class="line">                requestRender();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mPreviousX = x;</div><div class="line">        mPreviousY = y;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这里为了便于理解触摸事件和图形旋转角度两者的关系，我们来看看这个过程到底做了什么，在此之前先来回顾一下 Android 中 View 的坐标系内容。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-24584f46ab1c99a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/h/720" alt="View 坐标系"></p>
+<p>如上图所示，Android 中 View 的坐标系的原点位于竖直屏幕的左上角，这是一个二维坐标系。我们之所以能在二维的界面上模拟出三维的效果，这是借助了 Camera 来模拟人眼观测时构建的三维坐标系。如上图所示 Camera 三维坐标系是符合左手坐标系规则的，我们的旋转其实就是基于 Camera 坐标系中的 z 轴的旋转。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7d5ea7d10a406046.gif?imageMogr2/auto-orient/strip" alt="Camera 模拟三维观测"></p>
+<blockquote>
+<p>这里的 Camera 要和手机硬件上的相机区分开来，那个一般叫 Image Sensor 。具体可以参考这篇文章的描述：<a href="http://www.jianshu.com/p/7d88ec1347b6" target="_blank" rel="external">理解 Android 相机预览方向和拍照方向</a></p>
+</blockquote>
+<p>在 Android 中，关于图像模拟三维旋转的问题，其实是有很多地方讲究的。推荐学习下扔物线的 <a href="http://hencoder.com/ui-1-4/" target="_blank" rel="external">HenCoder Android 开发进阶：自定义 View 1-4 Canvas 对绘制的辅助</a> 系列文章，可以加深你对于 Camera 辅助绘制的机制。</p>
+<p>这里简单介绍一下文章中提到的一个知识点，就是关于使用 Camera 来做三维变换时的旋转规律问题，Android 中的实际表现跟 OpenGL 的文档描述还是有一定区别的。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-2b9150aeec689424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20170821-182449@2x.png"></p>
+<p>我们要实现图像平面旋转，其实就是绕 z 轴进行旋转。从上图可知，z 轴朝屏幕里面方向为正。我们面对屏幕时，是从屏幕正面向里面看， Camera 所处的位置应该在 z 轴的负坐标上（如图中黄色小点所示）。此时如果执行旋转方法，传入的旋转度数增大，图形会进行逆时针方向旋转，而减少旋转度数则变成顺时针方向旋转。</p>
+<blockquote>
+<p>假如 Camera 所处的位置在 z 轴的正坐标上时，增大旋转度数则会进行顺时针方向旋转。</p>
+</blockquote>
+<p>弄清楚旋转方向控制后，我们再来看看对于触摸事件要怎么处理。</p>
+<h4 id="处理触摸事件"><a href="#处理触摸事件" class="headerlink" title="处理触摸事件"></a>处理触摸事件</h4><p>在 Android 中我们知道可以通过 setOnTouchListener 方法设置对 View 触摸事件的监听， 对于 OpenGL 的处理也一样。如果下图所示就是触摸点与屏幕和 View 之间的关系，我们需要获取触摸时相对于屏幕的位置（通过 MotionEvent 的 getX()/getY() 获取 ）与上次触摸时位置进行计算，判断移动的距离和方向。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-c558a2f1c83ef924.png?imageMogr2/auto-orient/strip%7CimageView2/2/h/480" alt=""></p>
+<p>在实际开发中，假设我们想要设计手指触摸屏幕进行逆时针旋转时图形也能跟着一起旋转，根据前面的 Camera 三维变换的了解，这就需要设置 Camera 处于 z 负轴上并不断增大旋转度数。我们判断手指是不是在进行逆时针旋转，有两个判断条件：</p>
+<ol>
+<li><p>当触摸点处于 view 水平中线以上时，x 坐标要符合从左往右移动，计算前后两次触摸点在 x 轴上距离差值 dx 就是移动距离；而当触摸点处于水平中线以下时，x 坐标要符合从右往左移动，此时 x 是减小的，所以对 dx 取负数。</p>
+</li>
+<li><p>当触摸点处于 view 竖直中线以有时，y 坐标要符合从上往下移动，计算前后两次触摸点在 y 轴上距离差值 dy 就是移动距离。而当触摸点处于 view 竖直中线以左时，y 坐标应该要符合从下往上移动，此时 y 是减小的，所以对 dy  取负数。</p>
+</li>
+</ol>
+<p>计算出正确的触摸滑动距离后，我们再设计一个旋转度数因子与之相乘，以达到实际旋转时的角度大小。注意在计算旋转角度后，要调用 <a href="http://developer.android.com/reference/android/opengl/GLSurfaceView.html#requestRender(" target="_blank" rel="external">requestRender()</a>)来告诉渲染器现在可以进行渲染了。这种办法对于这个例子来说是最有效的，因为图形并不需要重新绘制，除非有一个旋转角度的变化。当然，为了能够真正实现执行效率的提高，记得使用 <a href="http://developer.android.com/reference/android/opengl/GLSurfaceView.html#setRenderMode(int" target="_blank" rel="external">setRenderMode()</a>) 方法以保证渲染器仅在数据发生变化时才会重新绘制图形，所以确认在代码中配置了下面的渲染模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">MyGLSurfaceView05</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// Render the view only when there is a change in the drawing data</span></div><div class="line">    setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="设置旋转角度"><a href="#设置旋转角度" class="headerlink" title="设置旋转角度"></a>设置旋转角度</h3><p>要实现跟随触摸手势实现动态改变图形旋转角度，我们需要在渲染器中添加一个 public 成员变量。由于渲染器代码运行在一个独立的线程中（非主UI线程），我们必须同时将该变量声明为 volatile （使其多线程可见）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyGLRenderer5</span> <span class="keyword">implements</span> <span class="title">GLSurfaceView</span>.<span class="title">Renderer</span> </span>&#123;</div><div class="line"></div><div class="line">    ...</div><div class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">float</span> mAngle;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">getAngle</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> mAngle;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAngle</span><span class="params">(<span class="keyword">float</span> angle)</span> </span>&#123;</div><div class="line">        mAngle = angle;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="应用旋转效果"><a href="#应用旋转效果" class="headerlink" title="应用旋转效果"></a>应用旋转效果</h3><p>同上面文章提到的处理方式一样，把自动旋转时的度数换成上面的设置 mAngle 即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawFrame</span><span class="params">(GL10 gl)</span> </span>&#123;</div><div class="line">        <span class="comment">// 每次先清除已有绘制内容，避免旋转时绘制内容叠加</span></div><div class="line">         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);</div><div class="line"></div><div class="line">        <span class="keyword">float</span>[] scratch = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">16</span>];</div><div class="line"></div><div class="line">        <span class="comment">// Set the camera position (View matrix)</span></div><div class="line">        Matrix.setLookAtM(mViewMatrix, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">3</span>, <span class="number">0f</span>, <span class="number">0f</span>, <span class="number">0f</span>, <span class="number">0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>);</div><div class="line"></div><div class="line">        <span class="comment">// Calculate the projection and view transformation</span></div><div class="line">        Matrix.multiplyMM(mMVPMatrix, <span class="number">0</span>, mProjectionMatrix, <span class="number">0</span>, mViewMatrix, <span class="number">0</span>);</div><div class="line"></div><div class="line"></div><div class="line">        <span class="comment">// Create a rotation transformation for the triangle</span></div><div class="line">        <span class="comment">// 设置 Camera 位置（0, 0, -1.0f），此时处于 z 负轴上，模拟人眼一样从屏幕正面看向里面</span></div><div class="line">        <span class="comment">// 设置旋转角度 mAngle，此时如果增大旋转角度图形应该是逆时针绕 z 轴旋转</span></div><div class="line">        Matrix.setRotateM(mRotationMatrix, <span class="number">0</span>, mAngle, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">1.0f</span>);</div><div class="line"></div><div class="line">        <span class="comment">// Combine the rotation matrix with the projection and camera view</span></div><div class="line">        <span class="comment">// Note that the mMVPMatrix factor *must be first* in order</span></div><div class="line">        <span class="comment">// for the matrix multiplication product to be correct.</span></div><div class="line">        Matrix.multiplyMM(scratch, <span class="number">0</span>, mMVPMatrix, <span class="number">0</span>, mRotationMatrix, <span class="number">0</span>);</div><div class="line"></div><div class="line">        <span class="comment">// Draw shape</span></div><div class="line">        mTriangle.draw(scratch);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>当完成了上述步骤，我们就可以运行这个程序，并通过手指在屏幕上的滑动旋转三角形了：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-b9083e55ac2b66ba.gif?imageMogr2/auto-orient/strip" alt=""></p>
+<p>上图中可以看到，当手势进行顺时针旋转时，图形却在进行逆时针旋转。这不是代码出错了，而是设置 Camera 位置变化后的正常效果，不信你可以将渲染器中的代码改成：<code>Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);</code> 后再试试效果。如果你还没有理解这是为什么，建议可以再好好地回顾一下本篇文章中提到的内容。</p>
+<p>关于 Android 中实现<a href="http://www.jianshu.com/p/5cfdceac57fa" target="_blank" rel="external"> OpenGL ES 基础图形绘制</a>的学习到这篇文章为止就算到此为止了，这个系列主要是参考了<a href="https://developer.android.com/training/graphics/opengl/index.html" target="_blank" rel="external">Google 官方的学习教程 Displaying Graphics with OpenGL ES</a>，有兴趣的可以去看看原版内容加深理解，后续的文章会尽可能结合实际开发中的问题进行探讨学习。</p>
+<p>文章中所有的代码示例都已放在 Github 上，可以去项目 <a href="https://github.com/baishixian/OpenGL-ES-Learning" target="_blank" rel="external">OpenGL-ES-Learning</a> 中查看 。</p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2017/09/15/Android 应用内微信 H5 支付/" rel="next" title="Android 应用内微信 H5 支付">
+    上一篇：Android 应用内微信 H5 支付
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2017/08/21/OpenGL ES 添加视图动作/" rel="next" title="OpenGL ES 添加视图动作">
+    下一篇：OpenGL ES 添加视图动作
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

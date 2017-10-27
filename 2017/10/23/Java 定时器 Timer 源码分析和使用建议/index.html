@@ -1,0 +1,731 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Java 定时器 Timer 源码分析和使用建议 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Java 定时器 Timer 源码分析和使用建议"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/源码分析/">源码分析</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Java 定时器 Timer 源码分析和使用建议</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2017-10-23T06:47:09.000Z"><a href="/2017/10/23/Java 定时器 Timer 源码分析和使用建议/">2017-10-23</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Java/" class="chip light-green">Java</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Timer-概述"><span class="section table-of-contents-text">Timer 概述</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#Timer-中优先队列的实现"><span class="section table-of-contents-text">Timer 中优先队列的实现</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#TimerTask-的调度"><span class="section table-of-contents-text">TimerTask 的调度</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#使用建议"><span class="section table-of-contents-text">使用建议</span></a></li></ol>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>Timer 定时器相信都不会陌生，之所以拿它来做源码分析，是发现整个控制流程可以体现很多有意思的东西。</p>
+</blockquote>
+<p>在业务开发中经常会遇到执行一些简单定时任务的需求，通常为了避免做一些看起来复杂的控制逻辑，一般考虑使用 Timer 来实现定时任务的执行，下面先给出一个最简单用法的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Timer timer = <span class="keyword">new</span> Timer();</div><div class="line">TimerTask timerTask = <span class="keyword">new</span> TimerTask() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// scheduledExecutionTime() 返回此任务最近开始执行的时间</span></div><div class="line">        Date date = <span class="keyword">new</span> Date(<span class="keyword">this</span>.scheduledExecutionTime());</div><div class="line">        System.out.println(<span class="string">"timeTask run "</span> + date);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 从现在开始每间隔 1000 ms 计划执行一个任务</span></div><div class="line">timer.schedule(timerTask, <span class="number">0</span>, <span class="number">1000</span>);</div></pre></td></tr></table></figure>
+<h3 id="Timer-概述"><a href="#Timer-概述" class="headerlink" title="Timer 概述"></a>Timer 概述</h3><p>Timer 可以按计划执行重复的任务或者定时执行指定任务，这是因为 Timer 内部利用了一个后台线程 TimerThread 有计划地执行指定任务。</p>
+<ul>
+<li><p><strong>Timer：</strong>是一个实用工具类，该类用来调度一个线程(schedule a thread)，使它可以在将来某一时刻执行。 Java 的 Timer 类可以调度一个任务运行一次或定期循环运行。 Timer tasks should complete quickly. 即定时器中的操作要尽可能花费短的时间。</p>
+</li>
+<li><p><strong>TimerTask：</strong>一个抽象类，它实现了 Runnable 接口。我们需要扩展该类以便创建自己的 TimerTask ，这个 TimerTask 可以被 Timer 调度。</p>
+</li>
+</ul>
+<p>一个 Timer 对象对应的是单个后台线程，其内部维护了一个 TaskQueue，用于顺序执行计时器任务 TimeTask 。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-8b91de1a8e85b8fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Timer"></p>
+<h3 id="Timer-中优先队列的实现"><a href="#Timer-中优先队列的实现" class="headerlink" title="Timer 中优先队列的实现"></a>Timer 中优先队列的实现</h3><p>TaskQueue 队列，内部用一个 TimerTask[] 数组实现优先队列（二叉堆），默认最大任务数是 128 ，当添加定时任务超过当前最大容量时会这个数组会拓展到原来 2 倍。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-d10a8b7bdf6e8ded.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="TaskQueue"></p>
+<p>优先队列主要目的是为了找出、返回并删除优先队列中最小的元素，这里优先队列是通过数组实现了平衡二叉堆，TimeQueue 实现的二叉堆用数组表示时，具有最小 nextExecutionTime 的 TimerTask 在队列中为 queue[1] ，所以堆中根节点在数组中的位置是 queue[1] ，那么第 n 个位置 queue[n] 的子节点分别在 queue[2<em>n] 和 queue[2</em>n+1] 。关于优先队列的数据结构实现，这里推荐一篇文章：<a href="https://segmentfault.com/a/1190000005676271" target="_blank" rel="external">数据结构与算法学习笔记 - 优先队列、二叉堆、左式堆</a>。</p>
+<p>按照 TaskQueue 的描述：<code>This class represents a timer task queue: a priority queue of TimerTasks, ordered on nextExecutionTime.</code>这是一个优先队列，队列的优先级按照 nextExecutionTime 进行调度。<br>也就说 TaskQueue 按照 TimerTask 的 nextExecutionTime 属性界定优先级，优先级高的任务先出队列，也就先执行任务调度。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7aedc068b20bac9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="队列操作"></p>
+<p>如上图所示，列举了优先队列中部分操作的实现，优先队列插入和删除元素的复杂度都是O(logn)，所以<code>add, removeMin 和 rescheduleMin</code>方法的性能都是不错的。从上图可以知道，获取下一个计划执行任务时，取队列的头出列即可，为了减少额外性能消耗，移除队列头部元素的操作是先把队尾元素赋值到队首后，再把队尾置空，队列数量完成减一后进行优先权值操作。再下面看看保证优先队列最核心的两个方法<code>fixUp</code>和<code>fixDown</code>。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-fe236c10cf3c1139.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>两个方法的核心思路都是通过向上或向下调整二叉堆中元素所在位置，保持堆的有序性：<br>fixUp 是将元素值小于父节点的子节点与父节点交换位置，保持堆有序。交换位置后，原来的子节点可能仍然比更上层的父节点小，<br>所以整个过程需要循环进行。这样一来，原来的子节点有可能升级为层级更高的父节点，类似于一个轻的物体从湖底往上浮直到达到其重力与浮力相平衡的过程。<br>fixDown 将元素值大于子节点的父节点与子节点交换位置，交换位置后， 原来的父节点仍然有可能比其下面的子节点大， 所以还需要继续进行类相同的操作，以便保持堆的有序性。所以整个过程循环进行。 这类似于一个重的物体从湖面下沉到距离湖底的某个位置，直到达到其重力与浮力相平衡为止。<br>总的来说，就是调整大的元素下沉，小的元素上浮，反复调整后堆顶一直保持是堆中最小的元素，父节点元素要一直小于或等于子节点。</p>
+<h3 id="TimerTask-的调度"><a href="#TimerTask-的调度" class="headerlink" title="TimerTask 的调度"></a>TimerTask 的调度</h3><p>前面说完 Timer 源码中优先队列的实现，下面我们来看看其如果操作优先队列，实现 TimerTask 的计划调度的：</p>
+<p>Timer 提供了四个构造方法，每个构造方法都启动了一个后台线程（默认不是守护线程，除非主动指定）。所以对于每一个 Timer 对象而言，其内部都是对应着单个后台线程，这个线程用于顺序执行优先队列中所有的计时器任务。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-42142c4cf531ada0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Timer 构造器"></p>
+<p>当初始化完成 Timer 后，我们就可以往 Timer 中添加定时任务，然后定时任务就会按照我们设定的时间交由 Timer 取调度执行。Timer 提供了 schedule 方法，该方法依靠多次重载的方式来适应不同的情况，具体如下：</p>
+<ul>
+<li><strong>schedule(TimerTask task, Date time)：</strong>安排在指定的时间执行指定的任务。</li>
+<li><strong>schedule(TimerTask task, long delay) ：</strong>安排在指定延迟后执行指定的任务。</li>
+<li><strong>schedule(TimerTask task, Date firstTime, long period) ：</strong>安排指定的任务在指定的时间开始进行重复的固定延迟执行。</li>
+<li><p><strong>schedule(TimerTask task, long delay, long period) ：</strong>安排指定的任务从指定的延迟后开始进行重复的固定延迟执行。</p>
+</li>
+<li><p><strong>scheduleAtFixedRate :</strong>，scheduleAtFixedRate 方法与 schedule 相同，只不过他们的侧重点不同，区别后面分析。</p>
+</li>
+<li><p><strong>scheduleAtFixedRate(TimerTask task, Date firstTime, long period)：</strong>安排指定的任务在指定的时间开始进行重复的固定速率执行。</p>
+</li>
+<li><strong>scheduleAtFixedRate(TimerTask task, long delay, long period)：</strong>安排指定的任务在指定的延迟后开始进行重复的固定速率执行。</li>
+</ul>
+<p>首先来看 <code>schedule(TimerTask task, Date time)</code> 和 <code>schedule(TimerTask task, long delay)</code> ，第一个参数传入是定时任务的实例，区别在于方法的第二个参数，date 是在指定的时间点，delay 是当前时间延后多少毫秒。这就引出了 Timer 具有的两个特性：定时（在指定时间点执行任务）和延迟（延迟多少秒后执行任务）。<br>值得大家注意的是：这里所说时间都是跟系统时间相关的绝对时间，而不是相对时间，基于这点，Timer 对任务的调度计划和系统时间息息相关，所以它对系统时间的改变非常敏感。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-d9ebde2454cc7893.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>下面在来看看  <code>schedule(TimerTask task, Date time)</code> 和 <code>schedule(TimerTask task, Date firstTime, long period)</code> 的区别。对比方法中新增的 period 参数，period 作用区别在于 Timer 的另一个特性：周期性地执行任务（一次任务结束后，可以每隔个 period 豪秒后再执行任务，如此反复）。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7d78a0ccdbdc385c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>从上面 schedule 的方法重载来看，最终都是调用了  <code>sched(TimerTask task, long time, long period)</code> 方法，只是传入的参数不同，下面就再来看就看关于 schedule 和 scheduleAtFixedRate 的区别：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-8a62f81550dc3c1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>从调用方法来看，他们的区别仅仅是传入 sched 方法 period 参数正负数的差别，所以具体的就要看 sched 方法的实现。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-9803b8eff5d79504.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>可以看到 sched 方法主要是设置 TimerTask 属性和状态，比如<br> nextExecutionTime 等，然后将任务添加到队列中。能看出来，设置定时任务 task 属性时是加了锁的，而且在添加任务到队列时，这里使用 Timer 内 TaskQueue 实例作为对象锁，并且使用 wait 和 notify 方法来通知任务调度。Timer 类可以保证多个线程可以共享单个 Timer 对象而无需进行外部同步，所以 Timer 类是线程安全的。</p>
+<p>这里注意区分开: 前面一个 Timer 对象中用于处理任务调度的后台线程TimerThread 实例和 schedule 方法传入后被加入到 TaskQueue 的 TimerTask 任务的实例，两者是不一样的。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7e01da3d57848094.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>要想知道为 TimerTask 设置属性和状态的作用，那就得进一步看看 TimerTask 类的具体实现了。</p>
+<p>TimerTask 类是一个抽象类，可以由 Timer 安排为一次执行或重复执行的任务。它有一个抽象方法 run() 方法，用于子类实现 Runnale 接口。可以在 run 方法中写定时任务的具体业务逻辑。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-443d82e541e0bb41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="TimerTask"></p>
+<p>可以看到下图中 TimerTask 类中的文档描述，如果任务是按计划执行，那么 nextExecutionTime 属性是指下次任务的执行时间，时间格式是按照 System.currentTimeMillis 返回的。对于需要重复进行的任务，每个任务执行之前会更新这一属性。</p>
+<p>而 period 属性是用来表示以毫秒为时间单位的重复任务。period 为正值时表示固定速率执行，负值表示固定延迟执行，值 0 表示一个非重复性的任务。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-bbaf767cda33831a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>所谓固定速率执行和固定延迟执行，固定延迟指的是定时任务会因为前一个任务的延迟而导致其后面的定时任务延时，而固定速率执行则不会有这个问题，它是直接按照计划的速率重复执行，不会考虑前面任务是否执行完。</p>
+<p>这也是 scheduleAtFixedRate 与 schedule 方法的区别，两者侧重点不同，schedule 方法侧重保存间隔时间的稳定，而 scheduleAtFixedRate 方法更加侧重于保持执行频率的稳定。</p>
+<p>另外 TimerTask 还有两个非抽象方法：</p>
+<ul>
+<li><strong>boolean cancel()：</strong>取消此计时器任务。</li>
+<li><strong>long scheduledExecutionTime()：</strong>返回此任务最近实际执行的安排执行时间。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-3e6713893a93a932.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>说完这些，下面就来看看 Timer 的后台线程具体是如何调度队列中的定时任务，可以看到 TimerThread 是持有任务队列进行操作的，也就具有了任务调度功能了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-5c344f1fef677442.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>下面就来看看后台线程的 run 方法调用 mainLoop 具体做了什么：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7912e25921788751.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>前面说到每个 Timer 对象内部包含一个 TaskQueue 实例，在执行定时任务时，TimerThread 中将这个 taskqueue 对象作为锁，在任何时刻只能有一个线程执行 TimerTask 。Timer 类为了保证线程安全的，是不需要外部同步机制就可以共享同一个 Timer 对象。</p>
+<p>可以看到 Timer 是不会捕获异常的，如果 TimerTask 抛出的了未检查异常则会导致 Timer 线程终止，同时 Timer 也不会重新恢复线程的执行，它会错误的认为整个 Timer 线程都会取消。同时，已经被安排但尚未执行的 TimerTask 也不会再执行了，新的任务也不能被调度。所以，如果 TimerTask 抛出未检查的异常，Timer 将会产生无法预料的行为。</p>
+<p>注意看计划安排任务的核心代码，包括任务计划执行时间的设置，也有优先队列保持二叉堆序性地操作。下面代码很好地体现了 period 属性作用，period 为正值时表示固定速率执行，负值表示固定延迟执行，值 0 表示一个非重复性的任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">currentTime = System.currentTimeMillis();</div><div class="line">executionTime = task.nextExecutionTime;</div><div class="line"><span class="keyword">if</span> (taskFired = (executionTime&lt;=currentTime)) &#123;</div><div class="line">    <span class="keyword">if</span> (task.period == <span class="number">0</span>) &#123; <span class="comment">// Non-repeating, remove</span></div><div class="line">        queue.removeMin();</div><div class="line">        task.state = TimerTask.EXECUTED;</div><div class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// Repeating task, reschedule</span></div><div class="line">        queue.rescheduleMin(</div><div class="line">          task.period&lt;<span class="number">0</span> ? currentTime   - task.period</div><div class="line">                        : executionTime + task.period);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>前面提过 Timer 使用 schedule (TimerTask task, Date firstTime, long period) 方法执行的计时器任务可能会因为前一个任务执行时间较长而延时。每一次执行的 task 的计划时间会随着前一个 task 的实际时间而发生改变，也就是 scheduledExecutionTime(n+1) = realExecutionTime(n) + periodTime。也就是说如果第 n 个 task 由于某种情况导致这次的执行时间过程，最后导致 systemCurrentTime&gt;= scheduledExecutionTime(n+1)，这是第 n+1 个 task 并不会因为到时了而执行，他会等待第 n 个 task 执行完之后再执行，那么这样势必会导致 n+2 个的执行时间 scheduledExecutionTime 发生改变。所以<br> schedule 方法更加注重保存间隔时间的稳定。</p>
+<p>而对于 scheduleAtFixedRate(TimerTask task, Date firstTime, long period)，在前面也提过 scheduleAtFixedRate 与 schedule 方法的侧重点不同，schedule 方法侧重保存间隔时间的稳定，而 scheduleAtFixedRate 方法更加侧重于保持执行频率的稳定。在 schedule 方法中会因为前一个任务的延迟而导致其后面的定时任务延时，而 scheduleAtFixedRate 方法则不会，如果第 n 个 task 执行时间过长导致 systemCurrentTime &gt;= scheduledExecutionTime(n+1)，则不会做任何等待他会立即执行第 n+1 个 task，所以 scheduleAtFixedRate 方法执行时间的计算方法不同于 schedule，而是 scheduledExecutionTime(n)=firstExecuteTime +n*periodTime，该计算方法永远保持不变。所以 scheduleAtFixedRate 更加侧重于保持执行频率的稳定。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-cc77eccae52aa6de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>说完了 Timer 的源码分析，相信大致上也能明白定时集整个流程是怎样的。下面根据上面这些内容，说一些实际使用建议。</p>
+<h3 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h3><p>最近使用阿里 Java 开发编码规约插件，可以看到提示是建议使用 ScheduledExecutorService 代替 Timer ：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-8de291f692d99e0d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>那为什么要使用 ScheduledExecutorService 代替 Timer ：</strong></p>
+<ol>
+<li><p>前面我们也有提到，Timer 是基于绝对时间的，对系统时间比较敏感，而 ScheduledThreadPoolExecutor 则是基于相对时间；</p>
+</li>
+<li><p>Timer 是内部是单一线程，而 ScheduledThreadPoolExecutor 内部是个线程池，所以可以支持多个任务并发执行。</p>
+</li>
+<li><p>Timer 运行多个 TimeTask 时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用 ScheduledExecutorService 则没有这个问题。 </p>
+</li>
+<li><p>使用 ScheduledExecutorService 更容易明确任务实际执行策略，更方便自行控制。</p>
+</li>
+<li><p>默认 Timer 执行线程不是 daemon 线程, 任务执行完，主线程（或其他启动定时器的线程）结束时，task 线程并没有结束。需要注意潜在内存泄漏问题</p>
+</li>
+</ol>
+<p>下面给出一个实际使用 ScheduledExecutorService 代替 Timer 的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.concurrent.ScheduledExecutorService;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.ScheduledFuture;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.ScheduledThreadPoolExecutor;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.ThreadFactory;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * ImprovedTimer 改进过的定时器</span></div><div class="line"><span class="comment"> * 多线程并行处理定时任务时，Timer运行多个TimeTask时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，</span></div><div class="line"><span class="comment"> * 使用ScheduledExecutorService则没有这个问题。</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> baishixian</span></div><div class="line"><span class="comment"> * <span class="doctag">@date</span> 2017/10/16</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> */</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImprovedTimer</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 线程池不允许使用Executors去创建，而是通过ThreadPoolExecutor的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 说明：Executors各个方法的弊端：</span></div><div class="line"><span class="comment">     *  1）newFixedThreadPool和newSingleThreadExecutor:</span></div><div class="line"><span class="comment">     *   主要问题是堆积的请求处理队列可能会耗费非常大的内存，甚至OOM。</span></div><div class="line"><span class="comment">     * 2）newCachedThreadPool和newScheduledThreadPool:</span></div><div class="line"><span class="comment">     *   主要问题是线程数最大数是Integer.MAX_VALUE，可能会创建数量非常多的线程，甚至OOM。</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     *  线程池能按时间计划来执行任务，允许用户设定计划执行任务的时间，int类型的参数是设定</span></div><div class="line"><span class="comment">     *  线程池中线程的最小数目。当任务较多时，线程池可能会自动创建更多的工作线程来执行任务</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ScheduledExecutorService executorService = <span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>, <span class="keyword">new</span> ImprovedTimer.DaemonThreadFactory());</div><div class="line">    <span class="keyword">private</span> ScheduledFuture&lt;?&gt; improvedTimerFuture = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImprovedTimer</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 周期性重复执行定时任务</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> command 执行 Runnable</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> initialDelay 单位 MILLISECONDS</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> period 单位 MILLISECONDS</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(Runnable command, <span class="keyword">long</span> initialDelay, <span class="keyword">long</span> period)</span></span>&#123;</div><div class="line">        <span class="comment">// initialDelay 毫秒后开始执行任务，以后每隔 period 毫秒执行一次</span></div><div class="line"></div><div class="line">        <span class="comment">// schedule方法被用来延迟指定时间来执行某个指定任务。</span></div><div class="line">        <span class="comment">// 如果你需要周期性重复执行定时任务可以使用scheduleAtFixedRate或者scheduleWithFixedDelay方法，它们不同的是前者以固定频率执行，后者以相对固定频率执行。</span></div><div class="line">        <span class="comment">// 不管任务执行耗时是否大于间隔时间，scheduleAtFixedRate和scheduleWithFixedDelay都不会导致同一个任务并发地被执行。</span></div><div class="line">        <span class="comment">// 唯一不同的是scheduleWithFixedDelay是当前一个任务结束的时刻，开始结算间隔时间，如0秒开始执行第一次任务，任务耗时5秒，任务间隔时间3秒，那么第二次任务执行的时间是在第8秒开始。</span></div><div class="line"></div><div class="line">        improvedTimerFuture = executorService.scheduleAtFixedRate(command, initialDelay, period, TimeUnit.MILLISECONDS);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 周期性重复执行定时任务</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> command 执行 Runnable</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> initialDelay 单位 MILLISECONDS</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(Runnable command, <span class="keyword">long</span> initialDelay)</span></span>&#123;</div><div class="line">        <span class="comment">// initialDelay 毫秒后开始执行任务</span></div><div class="line"></div><div class="line">        improvedTimerFuture = executorService.schedule(command, initialDelay, TimeUnit.MILLISECONDS);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (improvedTimerFuture != <span class="keyword">null</span>) &#123;</div><div class="line">            improvedTimerFuture.cancel(<span class="keyword">true</span>);</div><div class="line">            improvedTimerFuture = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span> </span>&#123;</div><div class="line">        cancel();</div><div class="line">        executorService.shutdown();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 守护线程工厂类，用于生产后台运行线程</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DaemonThreadFactory</span> <span class="keyword">implements</span> <span class="title">ThreadFactory</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> AtomicInteger atoInteger = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(Runnable runnable)</span> </span>&#123;</div><div class="line">            Thread thread = <span class="keyword">new</span> Thread(runnable);</div><div class="line">            thread.setName(<span class="string">"schedule-pool-Thread-"</span> + atoInteger.getAndIncrement());</div><div class="line">            thread.setDaemon(<span class="keyword">true</span>);</div><div class="line">            <span class="keyword">return</span> thread;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>参考：<br><a href="http://wiki.jikexueyuan.com/project/java-enhancement/java-add1.html" target="_blank" rel="external">详解 Java 定时任务</a><br><a href="http://blog.csdn.net/mark_lq/article/details/50320265" target="_blank" rel="external">Java多线程总结（3）— Timer 和 TimerTask深入分析</a></p>
+<p>OVER…</p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2017/10/25/Mac 系统 Tomcat 配置/" rel="next" title="Mac 系统 Tomcat 配置">
+    上一篇：Mac 系统 Tomcat 配置
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2017/09/28/Android 获取 PackageInfo 引发 Crash 填坑/" rel="next" title="Android 获取 PackageInfo 引发 Crash 填坑">
+    下一篇：Android 获取 PackageInfo 引发 Crash 填坑
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

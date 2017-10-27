@@ -1,0 +1,785 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Google TagManager概念梳理（Android ) | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Google TagManager概念梳理（Android )"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/技术调研/">技术调研</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Google TagManager概念梳理（Android )</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2016-09-06T03:59:17.000Z"><a href="/2016/09/06/Google-TagManager概念梳理（Android/">2016-09-06</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android-TagManager/" class="chip light-green">Android,TagManager</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <p>##概述</p>
+<p>跟踪代码管理器是一个代码管理系统，可以轻松地更新移动应用上的代码和代码段被触发的时机，在有预先埋点的情况下，完成对第三方sdk代码或自定义代码逻辑的“动态”管理。</p>
+<blockquote>
+<p>例如通过tagmanager添加和更新Google Analytics等第三方sdk代码或自定义代码，而无需修改应用代码。这样既减少了错误，也免除了配置代码时向开发者求助的麻烦。</p>
+</blockquote>
+<p>##基本概念</p>
+<p>TagManager必须了解的一些基本概念，比如容器，代码，数据层、触发器和变量等。</p>
+<blockquote>
+<p>简单的说，一个公司注册一个账号，可以创建多个容器，比如一个android应用对应一个容器，容器里面主要包含了代码（tags）、触发器（triggers），宏变量（variables）等。</p>
+</blockquote>
+<p>###容器</p>
+<p>对于android端而言，容器就是提供给sdk的一份二进制配置文件（有导出的json文件），sdk可以更具容器配置文件来进行处理。sdk也可以从服务器获取最新的配置文件来替换当前本地的文件。</p>
+<blockquote>
+<p>通过获取容器，开发者可以获取动态获取集合值类型的宏变量值，要处理替换部分预设宏变量的参数，比如app id等，也可以获取容器相关的信息等。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-79b60f837fdc62f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>###代码</p>
+<p>代码指的是向第三方sdk发送信息的代码段。如果不使用诸如跟踪代码管理器这样的代码管理解决方案，则需要将这些代码段直接添加到移动应用的文件中。而使用tagmanager，就无需再在源代码文件中维护每个代码段，而只需在跟踪代码管理器界面中指定希望触发的代码，以及希望的触发时间。</p>
+<blockquote>
+<p>对于android端而言，代码就是指定了调用第三方sdk的信息，比如说可以设置tag产品为Google Analytics时，指定该第三方sdk需要配置的的Tracking ID（追踪id）、追踪类型（相当于sdk触发的事件类型，比如说指定为app view事件）等信息。</p>
+</blockquote>
+<p>代码效果相当于就是把我们需要在嵌入第三方sdk后要做的事件，转由tagmanager完成触发，不需要再显式地调用第三方sdk的代码。这样做的好处有下面几点：</p>
+<ul>
+<li>只需tagmanager实现一次触发动作，减少调用多个sdk的代码实现，相当于代码统一管理，避免重复多个sdk调用代码。</li>
+<li>后台可以动态配置代码，客户端获取到新的容器配置后，会解析配置文件后根据新的代码和规则，改变触动动作的时机以及调用第三方sdk的方法具体参数，实现“动态”配置（在必须先埋好点的基础上）。</li>
+<li>方便后期替换支持的第三方sdk时，可以做到项目代码不改变（在tagmanager支持的第三方sdk，不需要再显式调用第三方sdk触发代码）,当然所有的前提的都是要埋点。</li>
+</ul>
+<p>###触发器</p>
+<blockquote>
+<p>首先需要再次明确一点：tagmanager并不是减少了埋点的数量，该埋的位置照样还是要埋，只不过是将原来调用第三方sdk触发事件的方法转由tagmanager来完成，相当于tagmanaager作为第三方sdk的代理者（其实是后面的数据层实现了数据映射）。</p>
+</blockquote>
+<p>触发器，简单的说就是一组行为触发的条件规则，满足条件的行为才会被触发。这也是tagmanager的“动态”性表现之一。也就是用户行为要触发代码前，需要达到触发器设置的条件规则才能执行，这个触发器配置内容包含在从后端获取的容器配置文件中。</p>
+<p>“触发器”是指在运行时求值结果为“true”或“false”的条件。求值方法是对比“变量”的值与在定义触发器时指定的值，附加到代码的触发器用于控制该代码在何时触发或不触发。</p>
+<p>“tagmanager变量”是指经过配置的“名称-值”对，其中的值在运行时填充。tagmanager有许多内置变量，还可以配置自定义变量。</p>
+<p>例如，预定义的变量“url”始终包含当前加载的网页的网址。如果希望仅针对网页 example.com/purchase/receipt.html触发代码，那么需要定义这样的规则:<br>事件：网页浏览<br>触发器类型：网页浏览<br>触发条件：某些网页浏览<br>当以下条件的结果为“true”时触发代码：<br>网址包含 example.com/purchase/receipt.html</p>
+<p>可以根据自己的需要定义变量(多种宏类型变量)，每个变量都包含需要在运行时使用的某些信息。然后，可以在触发器条件中使用这些变量，或者通过这些变量将信息传递给代码。</p>
+<p>常见的触发条件：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">包含</td>
+</tr>
+<tr>
+<td style="text-align:center">开头为</td>
+</tr>
+<tr>
+<td style="text-align:center">结尾为</td>
+</tr>
+<tr>
+<td style="text-align:center">匹配正则表达式</td>
+</tr>
+<tr>
+<td style="text-align:center">与正则表达式相匹配（忽略大小写）</td>
+</tr>
+<tr>
+<td style="text-align:center">小于</td>
+</tr>
+<tr>
+<td style="text-align:center">小于或等于</td>
+</tr>
+<tr>
+<td style="text-align:center">大于</td>
+</tr>
+<tr>
+<td style="text-align:center">不等于</td>
+</tr>
+<tr>
+<td style="text-align:center">不包含</td>
+</tr>
+<tr>
+<td style="text-align:center">开头不是</td>
+</tr>
+<tr>
+<td style="text-align:center">结尾不是</td>
+</tr>
+<tr>
+<td style="text-align:center">不匹配正则表达式</td>
+</tr>
+<tr>
+<td style="text-align:center">与正则表达式不匹配（忽略大小写）</td>
+</tr>
+</tbody>
+</table>
+<p>###宏变量</p>
+<p>在tagmanager中变量都是具有固定的类型匹配的.</p>
+<ul>
+<li>已启用广告跟踪：对于 Android，如果启用了广告跟踪，该变量返回 true，如果用户选择停用针对用户兴趣的广告，则返回 false。在 Android 开发者中心中了解详情。v4 以前的 SDK 版本将始终返回 false。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>应用 ID：该值设置为程序包名称 (Android) 或捆绑包 ID (iOS)。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>应用名称：该值设置为当前正在运行的应用的名称。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>应用版本号：该值设置为当前正在运行的应用的版本。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>常量：该值设置为提供的字符串。</li>
+<li>容器 ID：该值为该容器的公共 ID（如 GTM-ABC42）。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>容器版本号：当容器处于预览模式时，此变量值为容器的预览版本号。在其他情况下，此变量值是容器的实际版本号。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>设备 ID：对于 Android，该值设置为设备 ID。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>设备名称：该值设置为当前正在运行的应用的设备名称（如“Samsung Android”、“Android SDK built for x86”）。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>事件名称：在应用中执行以下代码时，该值设置为“eventNameXYZ”：</li>
+<li>事件参数：该值设置为针对给定键记录的 Firebase Analytics 事件参数值。</li>
+<li>Firebase 用户属性：该值设置为给定键的 Firebase Analytics 用户属性值。</li>
+<li>函数调用：该值设置为调用预注册的函数所返回的值。要了解详情，请参阅 SDK 文档（Android 或 iOS）。</li>
+<li>用于广告的 ID：对于 Android，该值设置为广告 ID。在 Android 开发者中心中了解详情。v4 以前的 SDK 版本将始终返回 ‘’（空字符串）。</li>
+<li>语言：该值设置为两个字母的语言代码，用于表示用户设置的设备语言。移动应用容器中会提供此类型的预定义变量，无需定义这一类型的新变量。</li>
+<li>对照表：该值根据对照表中的说明进行设置。对照表包含两列（下表中不包含任何数据，数据的使用方法在下文中介绍）：<br>操作系统版本：该值设置为安装应用的操作系统的版本。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>平台：该值设置为当前正在运行的应用所属的平台（如“Android”）。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>随机数字：该值设置为介于 0 到 2147483647 之间的一个随机数字。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>屏幕分辨率：该值设置为当前正在运行应用的设备的屏幕分辨率。格式为“&lt;宽&gt;x&lt;高&gt;”，例如“1024x768”。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>SDK 版本：该值设置为安装应用的操作系统的 SDK 版本。移动应用容器中会提供此类型的内置变量，无需定义这一类型的新变量。</li>
+<li>操作系统版本：该值设置为安装应用的操作系统的版本。</li>
+<li>平台：该值设置为目前正在运行应用的平台（“Android”或“iOS”其中之一）。移动应用容器中会提供此类型的预定义变量，无需定义这一类型的新变量。</li>
+<li>随机数：该值设置为介于 0 到 2147483647 之间的一个随机数。</li>
+<li>屏幕分辨率：该值设置为当前正在运行应用的设备的屏幕分辨率。格式为“宽 x 高”，例如“1024x768”。移动应用容器中会提供此类型的预定义变量，无需定义这一类型的新变量。</li>
+<li>SDK 版本：该值设置为安装应用的操作系统的 SDK 版本。移动应用容器中会提供此类型的预定义变量，无需定义这一类型的新变量。</li>
+</ul>
+<p>###数据层映射</p>
+<p>数据层是一种对象，可配置希望传递到tagmanager的信息。这需要配置数据层变量，用来采集这些值以备日后使用。要使tagmanager评估数据层变量的值，系统还必须推送事件，使用push来完成这个操作。</p>
+<blockquote>
+<p>在android中，数据层就是维持了一个事件队列，开发者通过push一个包含key-value的map对象来添加到队列中，当push接受到一个key=event的是对象时，将把队列中的事件内容提取出来，并匹配容器中触发器规则条件，两者相符合的即触发相应代码逻辑。因此数据层包含了接收开发者push过来的事件map对象，包含了容器中配置的数据层变量信息等。</p>
+</blockquote>
+<p>##Google TagManager实际示例</p>
+<p>先在项目代码中通过getDataLayer()获取数据层对象 可以使用push或pushEvent方法将数据传到数据层</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-c5e7e31073ffe814.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如上图，使用<code>pushEvent(object)</code>相当于<code>push(&quot;event&quot;,object)</code>，表示向数据层push了一个<code>key ＝ “event”，value ＝ “openScreen”</code>和一个<code>key ＝ “screen-name”,value ＝ “test page”</code>的map对象集。这些数据层变量会映射到Google Analytiecs中成为触发的参数。</p>
+<p>###<strong>下面来演示一下Google Tagmanager的具体操作步骤</strong></p>
+<p>####<strong>创建变量</strong></p>
+<p>创建数据层变量screen-name，作为传入数据层map的key，命名必须跟项目代码中保持一致性，注意上面的screen name2只是用于管理界面操作的标示。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-755143c1d7213783.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>创建一个常量类型的变量，用于保存Google Analytiecs的tracking id</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-dddadaa0b94a4710.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>####<strong>创建触发器</strong></p>
+<ol>
+<li><p>触发器openScreen: 在管理界面Event中数据层变量event值等于openScreen时触发<br><img src="http://upload-images.jianshu.io/upload_images/580515-c1c6bc2df7374327.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+</li>
+<li><p>触发器TestScrenn: 管理界面变量screen name2中的数据层变量screen-name值等于test page时触发<br><img src="http://upload-images.jianshu.io/upload_images/580515-532438a02017d49b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+</li>
+</ol>
+<p>####<strong>创建代码Tag</strong></p>
+<p>先看看需要配置的的整体效果<br><img src="http://upload-images.jianshu.io/upload_images/580515-d9fcbe5df1dcf44c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>选择管理代码的产品类型，这里选择Google Analytiecs，择好后再配置tag相关信息，比如GA所需的tracking id，触发的事件类型为App View，触发GA统计方法时传入的参数screenName会替换成数据层变量screen name2的值。就是数据层变量的值映射到GA的方法参数。</p>
+<p>借助tagmanager中的自动事件跟踪功能，无需在调用ga的<code>send(&quot;event&quot;, &quot;category&quot;, &quot;action&quot;, &quot;label&quot;)</code>硬编码每个点击操作，可以直接在TagManager界面中创建事件代码，然后基于预定义的变量或可以在TagManager界面中创建的自定义变量使用触发器触发这些代码。<br><img src="http://upload-images.jianshu.io/upload_images/580515-c7523e19b770fe1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>配置代码触发器，选择之前配置的两个触发器就行。<br><img src="http://upload-images.jianshu.io/upload_images/580515-56704645e9bcb242.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>全部配置完成后点击保存完成，点击publish生成新的版本发布。<br><img src="http://upload-images.jianshu.io/upload_images/580515-e7af81c7761814db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>####<strong>整体的关系效果图</strong></p>
+<p>通过调用tagmanager配置的数据层变量和方法，最终数据映射到Google analytiecs，这个过程并未在项目代码中显式的调用GA统计的代码，但是数据还是会传输到GA.<br><img src="http://upload-images.jianshu.io/upload_images/580515-6c6bdf84480ec1a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>####<strong>在goole analytiecs查看数据</strong><br><img src="http://upload-images.jianshu.io/upload_images/580515-c1779e4416123204.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2016/10/18/写给Android开发者的UI自动化测试上手指南/" rel="next" title="写给Android开发者的UI自动化测试上手指南">
+    上一篇：写给Android开发者的UI自动化测试上手指南
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2016/07/25/No锁区，畅玩Pokemon Go/" rel="next" title="No锁区，畅玩Pokemon Go">
+    下一篇：No锁区，畅玩Pokemon Go
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>X5 浏览器内核调研报告 | Keep Thinking</title>
+    <meta name="author" content="baishixian">
+    
+    <meta name="description" content="永远年轻，永远热泪盈眶">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="X5 浏览器内核调研报告"/>
+    <meta property="og:site_name" content="Baishixian&#39;s Blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Baishixian&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="brown darken-1">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Baishixian&#39;s Blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            分类
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            读书
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            关于
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            搜索
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav brown darken-1" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xt7m8.com2.z0.glb.clouddn.com/header.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">baishixian</p>
+                        <p class="desc">Android developer</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    首页
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    归档
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    分类
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    读书
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    关于
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    搜索
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav brown darken-1" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/开发技巧/">
+                    开发技巧 <span class="right">5 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Android/">
+                    Android <span class="right">12 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/技术调研/">
+                    技术调研 <span class="right">4 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/源码分析/">
+                    源码分析 <span class="right">2 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Java-Web/">
+                    Java-Web <span class="right">3 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/OpenGL-ES/">
+                    OpenGL-ES <span class="right">7 篇</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/自动化测试/">
+                    自动化测试 <span class="right">1 篇</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">搜索</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper brown darken-1">
+        <span class="breadcrumb">当前位置（分类目录）</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/技术调研/">技术调研</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>X5 浏览器内核调研报告</h1>
+    
+
+
+            </div>
+            <time class="light-green-link-context" datetime="2016-11-01T11:57:15.000Z"><a href="/2016/11/01/X5 浏览器内核调研报告/">2016-11-01</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Android/" class="chip light-green">Android</a>
+        
+    </div>
+
+
+            <div class="toc light-green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#系统内置浏览器内核差异化"><span class="section table-of-contents-text">系统内置浏览器内核差异化</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#Android-平台碎片化"><span class="section table-of-contents-text">Android 平台碎片化</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#二、目前移动端-H5-适配已有的问题是什么？"><span class="section table-of-contents-text">二、目前移动端 H5 适配已有的问题是什么？</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#三、为什么要用-X5-内核来改善效果？（替腾讯浏览服务-X5-内核官网介绍背书）"><span class="section table-of-contents-text">三、为什么要用 X5 内核来改善效果？（替腾讯浏览服务 X5 内核官网介绍背书）</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#四、小结"><span class="section table-of-contents-text">四、小结</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#一、关于浏览器内核是什么？"><span class="section table-of-contents-text">一、关于浏览器内核是什么？</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#浏览器内核渲染引擎的基础结构"><span class="section table-of-contents-text">浏览器内核渲染引擎的基础结构</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#关于Android-浏览器内核"><span class="section table-of-contents-text">关于Android 浏览器内核</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#二、关于x5-内核有什么优劣，是否有其他成熟解决方案？"><span class="section table-of-contents-text">二、关于x5 内核有什么优劣，是否有其他成熟解决方案？</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#腾讯浏览器服务-TBS-——-X5内核"><span class="section table-of-contents-text">腾讯浏览器服务 TBS —— X5内核</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#典型行业解决方案介绍——白鹭引擎"><span class="section table-of-contents-text">典型行业解决方案介绍——白鹭引擎</span></a></li></ol></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#HOW"><span class="section table-of-contents-text">HOW</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#一、如何借助-x5-内核来进行实践？"><span class="section table-of-contents-text">一、如何借助 x5 内核来进行实践？</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#二、要怎样进行具体的实施过程，解决那些已有的问题？"><span class="section table-of-contents-text">二、要怎样进行具体的实施过程，解决那些已有的问题？</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#集成-X5-内核"><span class="section table-of-contents-text">集成 X5 内核</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#实际功能应用（X5EngineDemo-示例程序）"><span class="section table-of-contents-text">实际功能应用（X5EngineDemo 示例程序）</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#H5-游戏测试"><span class="section table-of-contents-text">H5 游戏测试</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#播放网页视频"><span class="section table-of-contents-text">播放网页视频</span></a></li><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#Native与JS交互效果测试（JsBridge）"><span class="section table-of-contents-text">Native与JS交互效果测试（JsBridge）</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#三、如何评判引入-x5-内核后带来的提升？"><span class="section table-of-contents-text">三、如何评判引入 x5 内核后带来的提升？</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#总结"><span class="section table-of-contents-text">总结</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#部分参考资料："><span class="section table-of-contents-text">部分参考资料：</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#X5-示例Demo项目"><span class="section table-of-contents-text">X5 示例Demo项目</span></a>
+</div>
+
+
+            <div class="entry light-green-link-context">
+                <blockquote>
+<p>关于这份调研报告，不是从技术角度深入探索，重点是从产品本身分析，通俗易懂才是重点。主要是为了锻炼平时做技术调研和竞品分析的能力，以及业务拓展的技术储备。内容有点多，下面 <strong>X5 </strong>内核调研报告将分为三个环节：<strong>Why - What - How</strong> 描述。</p>
+</blockquote>
+<p>##按照经典的 2W1H 的策略描述<br><img src="http://upload-images.jianshu.io/upload_images/580515-f3ab1a6782284a8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2W1H策略"></p>
+<p>##WHY</p>
+<p>###一、Android 端为什么需要考虑浏览器内核问题 ？<br><strong>一言以蔽之：你是要搞定一个 X5 上的兼容性问题，还是要搞定几百台安卓手机上的兼容性问题。</strong>下面就从多个维度来分析兼容性问题：</p>
+<h4 id="系统内置浏览器内核差异化"><a href="#系统内置浏览器内核差异化" class="headerlink" title="系统内置浏览器内核差异化"></a>系统内置浏览器内核差异化</h4><p>对于 Android 系统，通常以下面四个节点作为重要划分依据，分析浏览器内核的差异性先系统差异性说起，下面是目前 Google 最新统计数据：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-3074ce97e2e6b075.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">系统版本</th>
+<th style="text-align:center">设备占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Android 4.0以下</td>
+<td style="text-align:center">0.9%</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 4.0 - Android 4.4</td>
+<td style="text-align:center">11.0%</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 4.4</td>
+<td style="text-align:center">20.0%</td>
+</tr>
+<tr>
+<td style="text-align:center">Android5.0及以上</td>
+<td style="text-align:center">68.1%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>从上面数据来看，当前绝大多数 Android 手机使用的都是 Android 4.4 或以上的系统， 这也是System WebView 内核大变更的分界线。</strong><br>在 Android 4.4版本中，原本基于 Android WebKit 的 WebView 实现被换成基于Chromium的实现，新的 Chromium 实现专注于提供一致性的接口（为了兼容以前的应用），而内部的渲染引擎改为使用基于 Blink/Content 内核的引擎，这实现不管是从功能上还是性能来讲，都带来巨大的提升。</p>
+<blockquote>
+<p>Chromium是一个由Google主导的开源浏览器工程，Chrome浏览器会选择在它的某一个稳定版本进行开发和发布。除了Chrome浏览器，Chrome OS也是基于Chromium开发的。</p>
+</blockquote>
+<p>从 Android 5.0 开始，Google 把 Chromium blink内核 webview 作为 apk 单独从系统抽离出去，可以在应用市场上面接收安装更新。应用可以直接使用该webview内核，Google也可以及时发布更新，不用再通过更新系统才能更新浏览器内核，也避免部分了 Android 系统碎片化问题。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-55de30c3fac6ccdb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="Android-平台碎片化"><a href="#Android-平台碎片化" class="headerlink" title="Android 平台碎片化"></a>Android 平台碎片化</h4><p><strong>关于 Android 碎片化问题集中表现在下面几个方面：</strong></p>
+<ul>
+<li>设备繁多，硬件配置参差不弃，设备性能各异，差距很大</li>
+<li>品牌众多，厂商标准不一致，定制化系统体验不同</li>
+<li>版本各异，国内外系统环境差异巨大</li>
+<li>分辨率不统一，各种类型尺寸众多</li>
+</ul>
+<p>下图是 OpenSignal 在 2015 年 8 月发布的基础统计数据，针对市场上常见的 1294 种手机品牌进行了市场占有率统计，可以看出机型分布非常零碎。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-66234b0c88c92001.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>下图是关于 Android 设备分辨率的分布图，可以看出 Android 设备各种类型尺寸众多，开发者需要进行适配的难度非常大。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-ebd0ec58e114677b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>特别是在 Android 系统开源但 Google 提供的基础服务在国内无法使用的情况下，国内厂商往往抛弃了 Google 既有的规范，对系统进行了大量的定制，导致设备ROM 与原生 Android 系统环境差异性巨大。</p>
+<p>对于浏览器内核也是如此，即便是Google推出了基于 Chromium blink 内核实现的 WebView，但是很多国内厂商对其进行了精简或替代，导致 WebView 内核也是碎片化问题严重，这让开发者直接使用系统浏览器内核进行开发产生了众多顾虑，不同机型适配难度也大大增加。</p>
+<h3 id="二、目前移动端-H5-适配已有的问题是什么？"><a href="#二、目前移动端-H5-适配已有的问题是什么？" class="headerlink" title="二、目前移动端 H5 适配已有的问题是什么？"></a>二、目前移动端 H5 适配已有的问题是什么？</h3><p><strong> 一言以蔽之：设备碎片化和UI风格的自定义（动画特效等）性能差。</strong><br>由于Android本身碎片化问题严重，不同设备上的体验差异性太大，开发者很难全面适配。虽然Google在不断引入行业中领先的技术改善体验，但是短时间内很难覆盖，况且开源特性也导致很难统一各厂商对系统定制化的取舍。</p>
+<p>在一些旧机型上面，就算h5页面中图片与文本信息并不多,但在WebView中展示的时候都会出现拖拽不流畅，切换留白、窗口闪烁等的现象，这是 WebView 自身渲染能力不强的问题所致。</p>
+<p>又比如Html5的Video控件播放视频，iOS点击视频部分，会用系统自带的浏览器全屏播放视频，体验效果佳；而Android的WebView无法全屏，体验效果差一些。<br>对于页面加载慢，偶尔内存泄露，不同 Android 系统版本采用了不同内核的兼容问题等等，这些都是使用原生 webview 组件进行开发时常会遇到的问题。</p>
+<p><strong>因此目前面临的首要问题就是：如何解决当前描述的移动端生态乱象。</strong></p>
+<h3 id="三、为什么要用-X5-内核来改善效果？（替腾讯浏览服务-X5-内核官网介绍背书）"><a href="#三、为什么要用-X5-内核来改善效果？（替腾讯浏览服务-X5-内核官网介绍背书）" class="headerlink" title="三、为什么要用 X5 内核来改善效果？（替腾讯浏览服务 X5 内核官网介绍背书）"></a>三、为什么要用 X5 内核来改善效果？（替腾讯浏览服务 X5 内核官网介绍背书）</h3><p>腾讯浏览服务由QQ浏览器团队出品，致力于优化移动端webview体验的整套解决方案，使用QQ浏览器X5内核SDK和X5云端服务，解决移动端webview使用过程中出现的一切问题，优化用户的浏览体验。</p>
+<blockquote>
+<p>X5 SDK是通过调用微信/手机QQ/空间的X5内核，解决系统webview兼容性差、加载速度慢、功能缺陷等问题，开发接入便捷，大小只有253K，仅需几行代码，即可解决一切令开发者们头疼的问题，为用户提供最优秀的浏览体验。</p>
+</blockquote>
+<p><strong>其相对于系统webview，具有下述明显优势：</strong><br>1) 速度快：相比系统webView的网页加载速度有近30%的提升。<br>2) 省流量：云端优化技术使流量节省20%<br>3) 更安全：24小时安全问题解决机制<br>4) 更稳定：经过亿级用户的使用考验，CRASH率0.15%<br>5) 集成强大的视频播放器，支持各种视频格式直接打开<br>6) 适屏排版、字体设置等浏览增强功能的提供<br>7) Html5更完整支持。<br>8) 无系统内核的碎片化问题，更少的兼容性问题<br>X5云端服务是通过云端技术保证用户在未装QQ浏览器的情况下同样可以使用X5内核提供的优秀服务，包括云加速、云安全、云转换三大功能。</p>
+<h3 id="四、小结"><a href="#四、小结" class="headerlink" title="四、小结"></a>四、小结</h3><p>关于 Why 这个部分，主要通过分析当前市场环境和开发者所面临的问题，引出使用 x5 内核必要性讨论。<br>对于前端开发同学而言，考虑如何更加有效的适配尽可能多的设备，兼容更多的用户环境，打造趋于一致的用户体验，在保证高度可用性的情况下，提供更多丰富的交互体验。<br>腾讯对 x5 内核的介绍看上去似乎是相当可靠的，但它是什么，接下来还得一步一步讨论关于浏览器内核。</p>
+<p>##WHAT</p>
+<h3 id="一、关于浏览器内核是什么？"><a href="#一、关于浏览器内核是什么？" class="headerlink" title="一、关于浏览器内核是什么？"></a>一、关于浏览器内核是什么？</h3><p><strong>关于浏览器内核的讨论可以分成两部分：渲染引擎(layout engineer 或者 Rendering Engine)和 JS 引擎。</strong><br>渲染引擎负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。<br>JS 引擎则是解析 Javascript 语言，执行 javascript 语言来实现网页的动态效果。最开始渲染引擎和 JS 引擎并没有区分的很明确，后来 JS 引擎越来越独立，内核就倾向于只指渲染引擎。<br>浏览器内核主要的作用是将页面转变成可视化的图像结果，整个过程可以简化描述成如下步骤：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-ad08754e3f360ef0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>2013 年以前，常见的浏览器内核代表有 Trident（IE），Gecko（firefox），Webkit（Safari chrome 等）以及 Presto（opera)。2013 年，谷歌开始研发 blink 引擎，chrome 28 以后开始使用，而 opera 则放弃了自主研发的 Presto 引擎，投入谷歌怀抱，和谷歌一起研发 blink 引擎，国内各种 chrome系的浏览器（360、UC、QQ、百度等等）也纷纷放弃 webkit，投入 blink 的怀抱。</p>
+<blockquote>
+<p>目前国内主流浏览器内核，如UC的U3内核、QQ浏览器的X5内核以及百度的T5内核在之前的版本都是基于开源内核 Webkit 开发，所以是在 Webkit 的基础上进行二次优化，在功能与性能上大同小异。而后随着 chrome 的发展，也逐渐转为了 blink 内核。</p>
+</blockquote>
+<h4 id="浏览器内核渲染引擎的基础结构"><a href="#浏览器内核渲染引擎的基础结构" class="headerlink" title="浏览器内核渲染引擎的基础结构"></a>浏览器内核渲染引擎的基础结构</h4><p>从内核整体结构上看，渲染引擎可以概括为主要包括HTML解释器、CSS解释器、布局和JavaScript引擎、绘图等：</p>
+<ul>
+<li>HTML解释器：解释HTML文本的解释器，主要作用是将HTML文本解释成DOM(文档对象模型)树，DOM是一种文档的表示方法.</li>
+<li>CSS解释器：级联样式表的解释器，主要作用是为DOM中各个元素对象计算出样式信息，从而为计算最后网页的布局提供基础设施。</li>
+<li>布局：在DOM创建之后，WebKit需要将其中的元素对象同样式信息结合起来，计算他们的大小位置等布局信息，形成一个能够表示这所有信息的内部表示模型。</li>
+<li>JavaScript引擎：使用JavaScript代码可以修改网页的内容，也能修改CSS的信息，JS引擎能够解释JS代码并通过DOM接口和CSSOM接口来修改网页内容和样式信息，从而改变渲染的结果。</li>
+<li>绘图：使用图形库将布局计算后的各个网页的节点绘制成图形结果。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-2c9ee51ccecd91e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="关于Android-浏览器内核"><a href="#关于Android-浏览器内核" class="headerlink" title="关于Android 浏览器内核"></a>关于Android 浏览器内核</h4><p>前面介绍有提到，在 Android 4.4版本中，原本基于 Android WebKit 的 WebView 实现被换成的Chromium实现，新的 Chromium 内部的渲染引擎改为使用基于 Blink/Content 内核的引擎。</p>
+<p>关于 WebKit 和 Chromium 的区别，关键在于Google 放弃了之前由 Apple 主导的开源 WebKit，可以说 WebKit 是以前维系 Google 和 Apple 一个技术交流的重要纽带。Chromium 是从一个 WebKit 分支基础上逐渐走上了自研的道路，其采用了自研的 Blink 渲染引擎和 V8 JavaScript 引擎作为新内核重要支撑。</p>
+<p>下面基于高低Android系统版本的两台测试机型的实际表现，<strong>对 WebView 内核在不同系统版本中的性能差异性进行简单量化：</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-997967c72da651f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>从对比测试来看，在 Android 4.4 以上系统中基于 Chromium 内核的开发的WebView对比旧版本的 WebKit 性能和兼容性方面有了显著的提升，与之相对的是 Chromium 多进程的特性导致内存占用变大，而且库文件也达到了 28M 左右。<br>下图是 Chromium 的架构和主要模块示意图，从图上可知 Blink 只是其中的一个模块，和它并列的还有众多的 Chromium 模块，包括 GPU/CommandBuffe r(硬件加速架构)、V8 JavaScript 引擎、沙箱模型、CC(Chromium合成器)、IPC、UI等</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-a3b54c9053f973f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="二、关于x5-内核有什么优劣，是否有其他成熟解决方案？"><a href="#二、关于x5-内核有什么优劣，是否有其他成熟解决方案？" class="headerlink" title="二、关于x5 内核有什么优劣，是否有其他成熟解决方案？"></a>二、关于x5 内核有什么优劣，是否有其他成熟解决方案？</h2><h3 id="腾讯浏览器服务-TBS-——-X5内核"><a href="#腾讯浏览器服务-TBS-——-X5内核" class="headerlink" title="腾讯浏览器服务 TBS —— X5内核"></a>腾讯浏览器服务 TBS —— X5内核</h3><p>腾讯浏览服务 TBS 在 2.3 版本中，其 X5 内核就是基于 Android 5.0 WebView Blink内核（M37版本）适配定制优化。</p>
+<p> X5 内核号称适配 Android 全部主流平台，可以在所有 Android 手机上使用Blink的技术能力，具有更好的 H5/CSS3 支持和性能。设备有安装微信、手机QQ、QQ空间即可使用最新的 TBS2.3Blink 内核。其官网提供了x5内核相关参数信息：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-37e960476b7ac8c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>实际对比测试表现：下面是在同一设备下，QQ 浏览器和 Google Chrome 浏览器在 H5 支持度对比数据。</strong><br>设备 ：华为 Nexus 6p   Android 7.1<br>测试平台：<a href="https://html5test.com" target="_blank" rel="external">https://html5test.com</a><br>左：QQ Browser 7.2    X5 内核<br>右：Chrome Dev 55    Chromium 内核</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-403a4221a32e17cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>从实际测试对比来看，对比Chromium 内核实际数据，X5 内核的表现并不及预期。当然测试依据主要是从兼容性和 H5 支持度这些技术指标，主要是从技术的维度来考察的。<br>考虑到实际开发场景中主要是兼容性问题比较突出，跑分不是最终目的，所以统一场景才是最重要的。下面看看 x5 的特点，可以做些什么。</p>
+<h4 id="典型行业解决方案介绍——白鹭引擎"><a href="#典型行业解决方案介绍——白鹭引擎" class="headerlink" title="典型行业解决方案介绍——白鹭引擎"></a>典型行业解决方案介绍——白鹭引擎</h4><p>目前针对HTML5游戏的解决方案已经非常多，针对成熟的技术类产品对比，通常有多个维度进行对比，不仅仅是技术层面，还有许多非技术层面的内容，这里不展开比较。</p>
+<p>之所以选择白鹭引擎来介绍，不仅仅是因为白鹭引擎拥有众多成熟的产品可以一站式解决而受开发者热捧，关键在于它还跟腾讯 X5 浏览器有深度合作，其好处不言而喻，恐怕会是微信游戏开发不二之选。<br>白鹭Egret引擎是一个开源免费的游戏框架，用于构建二维游戏、演示程序和其他图形界面交互应用等。Egret使用TypeScript脚本语言开发。当游戏完成最终的打包后，可以将程序转换为HTML5游戏。实现跨平台特性。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-f9eb981a12298478.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>Egret Runtime 是白鹭一款支持3D的HTML5游戏加速器，解决低端机对HTML5标准支持不佳、体验差的弊端，适配不同的系统让HTML5游戏效果媲美原生游戏。跟腾讯浏览器 x5的合作，直接支持了H5游戏运行所需的底层功能， 从根本上解决了碎片化和性能问题。</p>
+<p>腾讯浏览器 X5 已经解决了 HTML5 游戏在各个应用场景的运行问题，而跟合作白鹭 Egret Runtime 又可以大幅优化终端体验。根据官网介绍，在有 Egret Rumtime 加速的情况下，HTML5游戏会有3-5倍的性能提升，对比 PhoneGAP 方案约有30倍的性能提升，从而使 HTML5 游戏接近原生游戏的体验。</p>
+<h1 id="HOW"><a href="#HOW" class="headerlink" title="HOW"></a>HOW</h1><h2 id="一、如何借助-x5-内核来进行实践？"><a href="#一、如何借助-x5-内核来进行实践？" class="headerlink" title="一、如何借助 x5 内核来进行实践？"></a>一、如何借助 x5 内核来进行实践？</h2><p>通过<a href="x5.tencent.com/">腾讯浏览服务官网</a>提供的 X5 内核接入指南，将提供的内核服务的sdk集成到应用中。由于 x5 内核是在 Android 原生 WebView 基础上的二次开发，所以其提供的 在开发者调用接口上和原生保持一致，兼容原生 webview 的各种属性设置，如果之前使用原始 webview 的几乎时可以无缝替换。</p>
+<p>虽然对于主流移动应用开发模式的讨论已经是老生常谈，之前热议的 Hybrid 混合开发模式也被现在 ReactNative 、Weex 抢了风头。关键还是越来越多的场景需要高度动态化的内容，保持对用户友好且统一的体验同时，考虑更多的轻便快捷交互、快速迭代更新的特性。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-082a89de1b3c24b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>脱离实际的应用场景来讨论哪一种开发模式孰优孰劣没有意义，关键还是要贴合场景选择最适合的，所以这里对三种开发模式的相关细节不展开讨论，只针对开发有 Web 类场景需求的情况进行考虑：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-b9b6e060f4418cef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>相比Native App，Web 体验中受限于以上5个因素：网络环境，渲染性能，平台特性，受限于浏览器内核，系统限制。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-ab90c2341fd9e4d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>因此解决这些问题的关键在于提供一个良好的基础运行环境和一个成熟的完整解决方案。借助 x5 内核可以改善运行环境，到达交互趋于一致性。</p>
+<p>关于“一致性”经常被理解为同一个应用在各种平台和场景下要有一致性的体验。但是在移动平台开发过程中，“一致性”应该是App视觉和交互习惯与其运行平台的习惯保持一致，用户整体体验保持一致。而 Web 开发“一次开发，跨平台运行”的特性与此存在一定程度上的冲突是合理的。</p>
+<p>如上所述，借助 x5 内核的来进行实践的目的也就是如此。下面就按照这个设计思路就来进行具体的 x5 嵌入实施过程，从技术角度切入后，通过编写Demo试验比对实际效果，来判断带来怎样效益的提升。</p>
+<h3 id="二、要怎样进行具体的实施过程，解决那些已有的问题？"><a href="#二、要怎样进行具体的实施过程，解决那些已有的问题？" class="headerlink" title="二、要怎样进行具体的实施过程，解决那些已有的问题？"></a>二、要怎样进行具体的实施过程，解决那些已有的问题？</h3><p>具体实施过程大致分为嵌入集成和实际功能应用两个部分。</p>
+<h4 id="集成-X5-内核"><a href="#集成-X5-内核" class="headerlink" title="集成 X5 内核"></a>集成 X5 内核</h4><p>腾讯浏览服务 TBS 官网提供了 X5 内核SDK分为完整版和精简版。精简版不可独立下载x5内核，只能共享使用微信或手Q的x5内核，JAR包约190Kb。而完整版可独立下载x5内核，也可共享使用微信或手Q的x5内核，JAR包约280Kb。</p>
+<blockquote>
+<p>由于X5内核的API接口和系统的保持高度一致，因此实际的使用方式与使用原生进行开发一样。关于实际的编码过程不展开描述，具体参照官方的接入文档进行。</p>
+</blockquote>
+<p><strong>x5集成过程中发现了下面有几个特点：</strong></p>
+<ul>
+<li>如果有安装QQ 或 微信 （国内发布的版本），并且已经打开过内置- web，下拉网页顶部空白处会出现了由x5内核提供技术，表示应用是可以使用共享的x5内核。</li>
+<li>如果没有安装qq微信，应用不可以可以共享使用微信 或 QQ 中的 x5 内核，但是不能共享使用其他集成了x5应用的内核，只能使用完整版内核sdk包。</li>
+<li>有些设备首次启动无法启用 x5 内核，需要进程重启或首次启动长耗时等待以后才能正常使用 x5 内核。</li>
+<li>当无法使用 x5 内核，腾讯浏览服务 TBS SDK 会默认使用系统内置的webview，两者接口保持高度一致。</li>
+<li>x5对视频播放的支持很好，可全屏效果控制方便，腾讯也提供了配套的sdk后台服务。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-3da826c6dffbfb32.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="实际功能应用（X5EngineDemo-示例程序）"><a href="#实际功能应用（X5EngineDemo-示例程序）" class="headerlink" title="实际功能应用（X5EngineDemo 示例程序）"></a>实际功能应用（<a href="https://github.com/baishixian/X5WebEngineDemo" target="_blank" rel="external"><strong>X5EngineDemo</strong> 示例程序</a>）</h4><p>用QQ浏览器 X5 内核SDK和 X5 云端服务，解决移动端 webview 使用过程中出现困扰开发者需要适配兼容性的问题，提升性能的同时优化用户的浏览体验，有利于统一用户设备基础环境。</p>
+<p>带来的效益，主要是减少适配难度，提升产品兼容性和表现效果。成熟的产品和广泛的用户人群，提升保障同时减少出现不必要的麻烦，降低开发成本。</p>
+<p>在开放中有使用Html5的Video控件来播放视频的情况，为了举例说明使用 x5 可以带来的效益。下面就从展示网页这个角度切入，对比看看 X5 内核能带来的什么样的效果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-24c2d5bd31ebb4d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-4e1ba9b854d97616.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>从上图测试可以看出，对于首次加载网页，使用systemWebView进行网页加载耗时要优于x5，针对有开启缓存的情况喜爱，多次打开相同网页情况，x5的耗时是略比系统的少。</p>
+<h4 id="H5-游戏测试"><a href="#H5-游戏测试" class="headerlink" title="H5 游戏测试"></a>H5 游戏测试</h4><p><img src="http://upload-images.jianshu.io/upload_images/580515-9b3b664ac0d80561.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如下图所示，在测试全屏H5游戏效果时，对比发现两者在高硬件配置的设备上体验差异不大，x5的帧率比较稳定。在某些低配置和低版本系统上运行时，x5的表现要优于系统浏览器内核，而且适配性更强。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-d0098737590147ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="播放网页视频"><a href="#播放网页视频" class="headerlink" title="播放网页视频"></a>播放网页视频</h4><p><img src="http://upload-images.jianshu.io/upload_images/580515-75756a873c573f55.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如下图所示，测试腾讯视频网站，发现使用系统 WebView 存在视频加载错误的问题，而使用了 X5 内核的则是可以正常播放。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-7319fdd59638db6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>但是，接入 x5 内核的成本也是需要考虑，开发者对于 X5 的评价也褒贬不一。<br>下面测试哔哩哔哩弹幕网站的效果，在使用系统 webview 的情况下，是采用了哔哩哔哩带有弹幕的播放器，可以正常播放的同时也支持弹幕的显示。而采用了X5内核进行播放时，则自动替换成 x5 自带的播放器，可以看到loading显示的也是x5提供的界面，所以导致弹幕无法正常展示。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-afbef1c49919fc10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>下面再看看全屏模式下的播放，x5 对比原生区别很明显。而在测试 H5 游戏时，x5是能够正常音画同步，而系统webview则没有正常背景音乐，帧率偶尔也会低了10左右，这些也都是很多开发者选择 x5 的重要因素。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-1fe36c49df2cadb5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="Native与JS交互效果测试（JsBridge）"><a href="#Native与JS交互效果测试（JsBridge）" class="headerlink" title="Native与JS交互效果测试（JsBridge）"></a>Native与JS交互效果测试（JsBridge）</h4><p>首先我们来了解一下为什么要使用JSBridge，在开发中，为了追求开发的效率以及移植的便利性，一些展示性强的页面我们会偏向于使用 H5 来完成，功能性强的页面我们会偏向于使用 Native 来完成。<br>而一旦使用了 H5，为了在 H5 中尽可能的得到native的体验，我们 Native 层需要暴露一些方法给js调用，比如，弹Toast提醒，弹Dialog，分享等等，有时候甚至把h5的网络请求放着native去完成，而JSBridge做得好的一个典型就是微信，微信给开发者提供了JSSDK，该SDK中暴露了很多微信native层的方法，比如支付，定位等。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/580515-9480c4c1c01e16d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>测试通过JsBridge进行webview中的js代码调用本地java接口的效果，试验进行辅助sdk开发的可行性。X5 内核也提供了js接口安全调研机制来保证webview本身的安全漏洞问题，而且也会及时响应 Google 对于浏览器内核漏洞的修复。</p>
+<h3 id="三、如何评判引入-x5-内核后带来的提升？"><a href="#三、如何评判引入-x5-内核后带来的提升？" class="headerlink" title="三、如何评判引入 x5 内核后带来的提升？"></a>三、如何评判引入 x5 内核后带来的提升？</h3><p><strong> 总的来说，关于 X5 引入带来的提升，可以从下面的维度去讨论。在之前的对比分析中依旧有描述相关特性，而且关于实际表现很难定性指标依据，这里不再重复介绍。具体可以参照 Demo 中的实际使用效果，对比 X5 内核带来的提升效果。</strong></p>
+<ul>
+<li>页面加载速度（部分页面预加载缓存控制）</li>
+<li>界面使用流畅度（游戏帧率，效果稳定性）</li>
+<li>显示兼容性（页面兼容性，多机型适配，界面效果一致性，视频播放等）</li>
+<li>交互和特性支持（js支持丰富友好程度，新的HTML特性）</li>
+<li>稳定性和安全性（安全漏洞补丁修复）</li>
+<li>可持续性（迭代更新支持）</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过预研X5内核，梳理了浏览器内核相关的概念，按照典型的 2W1H 模型对比分析X5内核其技术特性和实际应用场景，在技术试验方面从多个维度来讨论可应用性。</p>
+<p>其实从前面的描述可以知道，腾讯推出 X5 内核主要是为了解决Android终端设备的差异性所造成的前端页面适配和浏览体验问题，意在打造一个可以让开发者减少适配工作成本，提升用户体验的一致性，为移动应用提供基础浏览器服务。</p>
+<p>根据调研过程中对浏览器内核技术的学习，以及对市场成熟应用场景的分析，基于 X5 内核sdk，我们可以做些什么？</p>
+<p>如果考虑开发 H5 游戏引擎，这个行业中已经太多的成熟解决方案，而且用户普遍对H5游戏的接受程度还有待提高。像微信拥有很好的流量入口，本来是拓展H5游戏的好平台，但是自身加以了严格限制，禁止朋友圈公众号转发H5游戏之类的。</p>
+<p>假设基于x5做二次封装，打造自己的sdk。但是 X5 跟系统 webview 接口保持高度一致，二次封装只能是增加开发者使用难度。而且浏览器内核相当难以维护，因为快速迭代导致直接整合的成本太高。</p>
+<p>如果做集成辅助类sdk，类似微信的JS-SDK，这是微信公众平台面向网页开发者提供的基于微信内的网页开发工具包，目的是减少网页开发者使用 js 与 微信App Native交互的成本。这里设想一个场景来考虑：<br>比如有这样一个场景，一个网页开发者打算开发一款游戏或者应用，但是考虑到开发成本和效益，直接通过实现H5界面后包成壳后，作为 App 来上架发布。这样实现快速开发的同时，又可以进行动态化内容可以快速更新，减少传统 App 迭代更新的各种弊端。</p>
+<p>现在有很多类似白鹭引擎之类的厂商提供了一整套的解决方案，但是链接 H5 和 Native相关的设想确并不是很多。比如 H5 开发者使用native平台本身的特性来进行交互设计的成本还是太大。虽然有类似 JsBridge 手段，但是同时兼顾js和native开发，需要网页开发者更大的成本，而怎么提供更丰富流畅的H5交互体验支持就是可以尝试去解决的问题。</p>
+<p><strong>总之，可以利用 x5 的适配性强的特点展开更多丰富交互设计和提升用户的设想，把浏览器内核这项基础性的底层服务应用得更好。</strong></p>
+<h1 id="部分参考资料："><a href="#部分参考资料：" class="headerlink" title="部分参考资料："></a>部分参考资料：</h1><p><a href="http://www.cnblogs.com/vajoy/p/3735553.html" target="_blank" rel="external">各主流浏览器内核介绍</a><br><a href="https://zhuanlan.zhihu.com/p/20799653" target="_blank" rel="external">Layabox 解读微信全面升级 X5 Blink 内核</a><br><a href="http://web.jobbole.com/84826/" target="_blank" rel="external">主流浏览器内核介绍（前端开发值得了解的浏览器内核历史）</a><br><a href="http://blog.csdn.net/luoshengyang/article/details/53209199" target="_blank" rel="external">Android WebView加载Chromium动态库的过程分析</a><br><a href="http://www.jianshu.com/p/0469cd7b1711" target="_blank" rel="external">HTML5游戏引擎深度测评</a><br><a href="http://games.qq.com/a/20150211/043398.htm" target="_blank" rel="external">腾讯X5联手白鹭EgretRuntime 共推HTML5游戏</a><br><a href="http://x5.tencent.com/" target="_blank" rel="external">腾讯浏览服务</a><br><a href="http://www.jianshu.com/p/e4009688119b" target="_blank" rel="external">基于腾讯X5内核的混合APP开发模式</a><br><a href="https://segmentfault.com/a/1190000004263182" target="_blank" rel="external">Hybrid APP架构设计思路</a><br><a href="travelchu.com/2016/03/14/理解JSBridge/">理解JSBridge</a><br><a href="http://blog.csdn.net/sbsujjbcy/article/details/50752595" target="_blank" rel="external">Android JSBridge的原理与实现</a></p>
+<h2 id="X5-示例Demo项目"><a href="#X5-示例Demo项目" class="headerlink" title="X5 示例Demo项目"></a>X5 示例Demo项目</h2><p><a href="https://github.com/baishixian/X5WebEngineDemo" target="_blank" rel="external"><strong>X5EngineDemo</strong> GitHub 地址</a></p>
+
+                
+<p class="light-green-link-context">
+    <a href="/2017/03/01/List 分页加载数据控制机制/" rel="next" title="List 分页加载数据控制机制">
+    上一篇：List 分页加载数据控制机制
+  </a>
+</p>
+
+
+
+<p class="light-green-link-context">
+    <a href="/2016/10/18/写给Android开发者的UI自动化测试上手指南/" rel="next" title="写给Android开发者的UI自动化测试上手指南">
+    下一篇：写给Android开发者的UI自动化测试上手指南
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large light-green">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red" title="回到顶部"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse purple"  data-activates="main-menu" title="菜单"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer brown darken-1 darken-1">
+    
+    <div class="footer-container container">
+        <div class="row">
+            
+            <div class="social-group col m4 s12">
+                <h5 class="white-text">社交</h5>
+                
+                    <a class="social-link" href="http://weibo.com/2924419940/profile?topnav=1&amp;wvr=6&amp;is_all=1" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+                
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div class="site-visitors-container white-text">
+        <span>
+            <i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span>
+            <i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+
+
+            </div>
+            
+
+            
+            <div class="col m8 s12">
+                <h5 class="white-text">友情链接</h5>
+                
+                    <a class="social-link" href="http://www.jianshu.com/users/071e495a9ba2/latest_articles" target="_blank">简书</a>
+                
+                    <a class="social-link" href="https://github.com/baishixian" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright light-green-link-context">
+        <div class="container">
+            © 2017 baishixian.top, All rights reserved.
+            <p class="right" style="margin-top: 0;">本博客由 <a href="https://hexo.io">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/raytaylorlin/hexo-theme-raytaylorism">raytaylorism</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+
+            // 目录随屏幕滚动（防止目录过长越过footer）
+            var $toc = $('.toc');
+            var scrollTargetTop = 0;
+            $(window).scroll(function() {
+                var $activeLink = $toc.find('a.active.section');
+                if ($(window).scrollTop() < 100) {
+                    scrollTargetTop = 0;
+                } else {
+                    if ($activeLink[0]) {
+                        scrollTargetTop = $activeLink.offset().top - $toc.offset().top;
+                    }
+                }
+                $toc.css('top', '-' + scrollTargetTop + 'px');
+            });
+
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('light-green lighten-2');
+
+            
+            // 添加new标签
+            $('.menu-reading, .menu-about').append('<span class="new badge light-green"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal({
+                // 打开搜索框时自动聚焦
+                ready: function() {
+                    if ($('#search').is(":visible")) {
+                        $('#search-input').focus();
+                    }
+                }
+            });
+            var searchXml = "";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword light-green lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+</body>
+</html>
