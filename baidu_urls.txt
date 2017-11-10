@@ -1,9 +1,13 @@
+http://baishixian.top/2017/11/10/HttpLoggingInterceptor没有body日志的分析/
+http://baishixian.top/2017/11/09/什么时候去解绑-Presenter/
+http://baishixian.top/2017/11/03/YSDK-那些坑/
+http://baishixian.top/2017/11/03/Android-应用中处理时区转化问题/
 http://baishixian.top/2017/10/27/一步一步使用 IntelliJ IDEA 创建简单的 Web 应用/
 http://baishixian.top/2017/10/26/处理 com.mysql.jdbc.Driver Not Found/
 http://baishixian.top/2017/10/25/Mac 系统 Tomcat 配置/
 http://baishixian.top/2017/10/23/Java 定时器 Timer 源码分析和使用建议/
 http://baishixian.top/2017/09/28/Android 获取 PackageInfo 引发 Crash 填坑/
-http://baishixian.top/2017/09/23/App 启动性能优化/
+http://baishixian.top/2017/09/23/App启动性能优化/
 http://baishixian.top/2017/09/21/Android 应用性能分析工具 — CPU Profiler/
 http://baishixian.top/2017/09/15/关于 Android 8.0 安装 APK 权限问题/
 http://baishixian.top/2017/09/15/Android 应用内微信 H5 支付/
@@ -24,7 +28,3 @@ http://baishixian.top/2017/04/01/利用 Android 系统原生 API 实现分享功
 http://baishixian.top/2017/03/09/Android 项目组件化重构的一些考虑/
 http://baishixian.top/2017/03/01/List 分页加载数据控制机制/
 http://baishixian.top/2016/11/01/X5 浏览器内核调研报告/
-http://baishixian.top/2016/10/18/写给Android开发者的UI自动化测试上手指南/
-http://baishixian.top/2016/09/06/Google-TagManager概念梳理（Android/
-http://baishixian.top/2016/07/25/No锁区，畅玩Pokemon Go/
-http://baishixian.top/2016/04/21/VideView播放视频遇到的坑/

@@ -3,6 +3,106 @@
 
 
     
+  <url>
+    <loc>http://baishixian.top/2017/11/09/%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8E%BB%E8%A7%A3%E7%BB%91-Presenter/</loc>
+    <lastmod>2017-11-10T07:40:18.370Z</lastmod>
+    <data>
+        <display>
+        <title>什么时候去解绑 Presenter</title>
+        <pubTime>2017-11-09T08:32:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://baishixian.top/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://baishixian.top/2017/11/10/HttpLoggingInterceptor%E6%B2%A1%E6%9C%89body%E6%97%A5%E5%BF%97%E7%9A%84%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2017-11-10T07:39:31.105Z</lastmod>
+    <data>
+        <display>
+        <title>HttpLoggingInterceptor 没有 body 日志的分析</title>
+        <pubTime>2017-11-10T07:28:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://baishixian.top/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://baishixian.top/2017/11/03/YSDK-%E9%82%A3%E4%BA%9B%E5%9D%91/</loc>
+    <lastmod>2017-11-10T07:39:22.545Z</lastmod>
+    <data>
+        <display>
+        <title>YSDK 那些坑</title>
+        <pubTime>2017-11-03T10:52:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://baishixian.top/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://baishixian.top/2017/11/03/Android-%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A4%84%E7%90%86%E6%97%B6%E5%8C%BA%E8%BD%AC%E5%8C%96%E9%97%AE%E9%A2%98/</loc>
+    <lastmod>2017-11-10T07:38:30.103Z</lastmod>
+    <data>
+        <display>
+        <title>Android 应用中处理时区转化问题</title>
+        <pubTime>2017-11-03T03:42:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://baishixian.top/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://baishixian.top/2017/09/23/App%E5%90%AF%E5%8A%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</loc>
+    <lastmod>2017-11-10T07:37:38.902Z</lastmod>
+    <data>
+        <display>
+        <title>App 启动性能优化</title>
+        <pubTime>2017-09-23T05:42:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://baishixian.top/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://baishixian.top/2016/03/30/Java%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90--String%E7%9A%84%E8%AE%BE%E8%AE%A1/</loc>
@@ -74,26 +174,6 @@
         <pubTime>2016-07-25T10:59:15.000Z</pubTime>
         
         <tag>Android,Xposed</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://baishixian.top/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://baishixian.top/2017/09/23/App%20%E5%90%AF%E5%8A%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2017-10-28T07:18:14.347Z</lastmod>
-    <data>
-        <display>
-        <title>App 启动性能优化</title>
-        <pubTime>2017-09-23T05:42:19.000Z</pubTime>
-        
-        <tag>Android</tag>
          
          
            
